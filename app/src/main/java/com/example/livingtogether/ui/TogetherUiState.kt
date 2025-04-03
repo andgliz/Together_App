@@ -18,6 +18,11 @@ data class RatingUiState(
     val usersList: List<UserViewData> = listOf()
 )
 
+data class LoginUiState(
+    val emailState: String = "",
+    val passwordState: String = "",
+)
+
 data class HouseworkViewData(
     val id: Int = 0,
     val name: String = "",
@@ -35,8 +40,6 @@ data class UsersHouseworkViewData(
     val user: UserViewData = UserViewData(),
     val housework: HouseworkViewData = HouseworkViewData()
 )
-
-
 
 fun HouseworkViewData.toHousework(): Housework = Housework(
     id = id,
