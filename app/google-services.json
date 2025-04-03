@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "608302364278",
+    "project_id": "together-app-43d2d",
+    "storage_bucket": "together-app-43d2d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608302364278:android:8df13ce69e8e50a645d157",
+        "android_client_info": {
+          "package_name": "com.example.livingtogether"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "608302364278-cd0h9t7jt2u7pobg105ikaoh73f1qls4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3rh9X9uuCogzt7docM6roEhdHFuhTkPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "608302364278-cd0h9t7jt2u7pobg105ikaoh73f1qls4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
