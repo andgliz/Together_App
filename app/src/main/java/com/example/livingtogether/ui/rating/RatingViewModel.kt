@@ -1,12 +1,9 @@
 package com.example.livingtogether.ui.rating
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.livingtogether.data.TogetherRepository
-import com.example.livingtogether.ui.HouseworkUiState
 import com.example.livingtogether.ui.RatingUiState
-import com.example.livingtogether.ui.toHouseworkViewData
 import com.example.livingtogether.ui.toUserViewData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,5 +30,4 @@ class RatingViewModel(
                 )
         }
     }
-
 }
