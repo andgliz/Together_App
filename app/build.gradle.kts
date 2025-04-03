@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp") version "2.1.10-1.0.31"
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -42,6 +43,13 @@ android {
 
 
 dependencies {
+    // Import the BoM for the Firebase platform
+    implementation(platform(libs.firebase.bom.v33110))
+
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation(libs.google.firebase.auth)
+
     //Navigation
     implementation(libs.androidx.navigation.compose)
 
