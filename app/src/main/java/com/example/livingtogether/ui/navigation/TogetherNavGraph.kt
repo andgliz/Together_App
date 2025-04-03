@@ -33,18 +33,17 @@ import com.example.livingtogether.ui.today.TodayScreen
 @Composable
 fun TogetherNavGraph(
     navController: NavHostController = rememberNavController(),
-    isAuth: Boolean,
+    isAuth: () -> Boolean,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         bottomBar = {
-            if (isAuth) {
+            if (isAuth()) {
                 NavigationBar(
                     onRatingClick = { navController.navigate(RatingDestination.route) },
                     onTodayClick = { navController.navigate(TodayDestination.route) },
                     onHouseworkClick = { navController.navigate(HouseworkDestination.route) },
-                    onProfileClick = { navController.navigate(ProfileDestination.route) },
-                    modifier = Modifier.fillMaxWidth()
+                    onProfileClick = { navController.navigate(ProfileDestination.route) }
                 )
             }
         }
@@ -54,7 +53,7 @@ fun TogetherNavGraph(
         ) {
             NavHost(
                 navController = navController,
-                startDestination = if (isAuth) RatingDestination.route else LoginDestination.route,
+                startDestination = if (isAuth()) RatingDestination.route else LoginDestination.route,
                 modifier = modifier
             ) {
                 composable(route = TodayDestination.route) {
@@ -78,12 +77,20 @@ fun TogetherNavGraph(
 
                 composable(route = ProfileDestination.route) {
                     ProfileScreen(
-                        title = ProfileDestination.titleRes
+                        title = ProfileDestination.titleRes,
+                        onSuccess = {
+                            navController.navigate(LoginDestination.route)
+                            isAuth()
+                        }
                     )
                 }
                 composable(route = LoginDestination.route) {
                     LoginScreen(
-                        title = LoginDestination.titleRes
+                        title = LoginDestination.titleRes,
+                        onSuccess = {
+                            navController.navigate(RatingDestination.route)
+                            isAuth()
+                        }
                     )
                 }
             }

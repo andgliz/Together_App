@@ -21,17 +21,19 @@ class ProfileViewModel(
 
     private val auth: FirebaseAuth = Firebase.auth
 
-    fun signOut() {
+    fun signOut(onSuccess: () -> Unit) {
         auth.signOut()
+        onSuccess()
     }
 
-    fun onDeleteAccountClicked(email: String, password: String) {
+    fun onDeleteAccountClicked(email: String, password: String, onSuccess: () -> Unit) {
         val credential = EmailAuthProvider.getCredential(email, password)
         auth.currentUser?.reauthenticate(credential)?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 auth.currentUser?.delete()?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.d("MyLog", "Account was deleted")
+                        onSuccess()
                     } else {
                         Log.d("MyLog", "Failure delete account")
                     }

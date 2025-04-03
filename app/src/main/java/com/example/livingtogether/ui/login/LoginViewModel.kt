@@ -32,11 +32,12 @@ class LoginViewModel(
         )
     }
 
-    fun signUp(email: String, password: String) {
+    fun signUp(email: String, password: String, onSuccess: () -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("MyLog", "Sign Up successful")
+                    onSuccess()
                 } else {
                     Log.d("MyLog", "Sign Up failure")
                 }
@@ -44,11 +45,12 @@ class LoginViewModel(
             }
     }
 
-    fun signIn(email: String, password: String) {
+    fun signIn(email: String, password: String, onSuccess: () -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("MyLog", "Sign In successful")
+                    onSuccess()
                 } else {
                     Log.d("MyLog", "Sign In failure")
                 }

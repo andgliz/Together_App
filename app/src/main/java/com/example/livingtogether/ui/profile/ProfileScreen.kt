@@ -28,7 +28,8 @@ object ProfileDestination : NavigationDestination {
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    title: Int
+    title: Int,
+    onSuccess: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -49,14 +50,14 @@ fun ProfileScreen(
                     text = "You"
                 )
                 Button(
-                    onClick = { viewModel.signOut() }
+                    onClick = { viewModel.signOut(onSuccess) }
                 ) {
                     Text(
                         text = "Sign Out"
                     )
                 }
                 Button(
-                    onClick = { viewModel.onDeleteAccountClicked(uiState.emailState, uiState.passwordState) }
+                    onClick = { viewModel.onDeleteAccountClicked(uiState.emailState, uiState.passwordState, onSuccess) }
                 ) {
                     Text(
                         text = "Delete Account"

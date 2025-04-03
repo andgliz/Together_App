@@ -34,7 +34,8 @@ object LoginDestination : NavigationDestination {
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    title: Int
+    title: Int,
+    onSuccess: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -69,7 +70,7 @@ fun LoginScreen(
                 )
                 Button(
                     onClick = {
-                        viewModel.signIn(uiState.emailState, uiState.passwordState)
+                        viewModel.signIn(uiState.emailState, uiState.passwordState, onSuccess)
                     }
                 ) {
                     Text(
@@ -78,7 +79,7 @@ fun LoginScreen(
                 }
                 Button(
                     onClick = {
-                        viewModel.signUp(uiState.emailState, uiState.passwordState)
+                        viewModel.signUp(uiState.emailState, uiState.passwordState, onSuccess)
                     }
                 ) {
                     Text(
