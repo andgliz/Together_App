@@ -17,7 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.livingtogether.R
+import com.example.livingtogether.ui.BottomMenuItem
 import com.example.livingtogether.ui.housework.HouseworkDestination
 import com.example.livingtogether.ui.housework.HouseworkScreen
 import com.example.livingtogether.ui.login.LoginDestination
@@ -40,10 +40,13 @@ fun TogetherNavGraph(
         bottomBar = {
             if (isAuth()) {
                 NavigationBar(
-                    onRatingClick = { navController.navigate(RatingDestination.route) },
-                    onTodayClick = { navController.navigate(TodayDestination.route) },
-                    onHouseworkClick = { navController.navigate(HouseworkDestination.route) },
-                    onProfileClick = { navController.navigate(ProfileDestination.route) }
+                    items = listOf(
+                        BottomMenuItem.RatingItem,
+                        BottomMenuItem.TodayItem,
+                        BottomMenuItem.HouseworkItem,
+                        BottomMenuItem.ProfileItem
+                    ),
+                    onIconClick = { navController.navigate(it) }
                 )
             }
         }
@@ -100,54 +103,45 @@ fun TogetherNavGraph(
 
 @Composable
 fun NavigationBar(
-    onRatingClick: () -> Unit,
-    onTodayClick: () -> Unit,
-    onHouseworkClick: () -> Unit,
-    onProfileClick: () -> Unit,
+    items: List<BottomMenuItem>,
+    onIconClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    BottomAppBar {
-        Row(
-            modifier = modifier.fillMaxWidth()
-        ) {
-            IconButton(
-                onClick = onRatingClick,
-                modifier = Modifier.weight(1F)
+    BottomAppBar(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        items.forEach { item ->
+            Row(
+                modifier = modifier
+                    .weight(1f)
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.rating),
-                    contentDescription = stringResource(R.string.rating)
-                )
-            }
-            IconButton(
-                onClick = onTodayClick,
-                modifier = Modifier.weight(1F)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.today),
-                    contentDescription = stringResource(R.string.today)
-                )
-            }
-            IconButton(
-                onClick = onHouseworkClick,
-                modifier = Modifier.weight(1F)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.list),
-                    contentDescription = stringResource(R.string.housework)
-                )
-            }
-            IconButton(
-                onClick = onProfileClick,
-                modifier = Modifier.weight(1F)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.profile),
-                    contentDescription = stringResource(R.string.profile)
+                BottomBarItem(
+                    title = item.navigation.titleRes,
+                    icon = item.icon,
+                    route = item.navigation.route,
+                    onIconClick = onIconClick
                 )
             }
         }
+
     }
+}
 
-
+@Composable
+fun BottomBarItem(
+    onIconClick: (String) -> Unit,
+    route: String,
+    title: Int,
+    icon: Int,
+    modifier: Modifier = Modifier
+) {
+    IconButton(
+        onClick = { onIconClick(route) },
+        modifier = Modifier
+    ) {
+        Icon(
+            painter = painterResource(icon),
+            contentDescription = stringResource(title)
+        )
+    }
 }
