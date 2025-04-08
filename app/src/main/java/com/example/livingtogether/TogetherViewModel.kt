@@ -2,6 +2,7 @@ package com.example.livingtogether
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.livingtogether.data.TogetherRepository
 import com.google.firebase.Firebase
@@ -13,5 +14,10 @@ class TogetherViewModel(
 ) : ViewModel() {
     private val auth: FirebaseAuth = Firebase.auth
 
-    val isAuth by mutableStateOf(auth.currentUser != null)
+    var isAuth by mutableStateOf(auth.currentUser != null)
+        private set
+
+    fun onChangeAuth() {
+        isAuth = auth.currentUser != null
+    }
 }
