@@ -27,6 +27,7 @@ data class RatingUiState(
 data class LoginUiState(
     val emailState: String = "",
     val passwordState: String = "",
+    val errorState: String = ""
 )
 
 data class HouseworkViewData(

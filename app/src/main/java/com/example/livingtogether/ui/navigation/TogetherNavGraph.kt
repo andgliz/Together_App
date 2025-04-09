@@ -35,7 +35,7 @@ fun TogetherNavGraph(
     navController: NavHostController,
     isAuth: Boolean,
     modifier: Modifier = Modifier,
-    onChangeAuth: () -> Unit
+    onChangeStatusOfAuth: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -68,7 +68,7 @@ fun TogetherNavGraph(
                 ProfileScreen(
                     title = ProfileDestination.titleRes,
                     onSuccess = {
-                        onChangeAuth()
+                        onChangeStatusOfAuth()
                         navController.navigate(LoginDestination.route)
                     }
                 )
@@ -78,7 +78,7 @@ fun TogetherNavGraph(
                 LoginScreen(
                     title = LoginDestination.titleRes,
                     onSuccess = {
-                        onChangeAuth()
+                        onChangeStatusOfAuth()
                         navController.navigate(RatingDestination.route)
                     }
                 )

@@ -17,7 +17,7 @@ class TogetherViewModel(
     var isAuth by mutableStateOf(auth.currentUser != null)
         private set
 
-    fun onChangeAuth() {
+    fun onChangeStatusOfAuth() {
         isAuth = auth.currentUser != null
     }
 }

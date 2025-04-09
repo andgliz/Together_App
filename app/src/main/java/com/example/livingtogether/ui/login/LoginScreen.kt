@@ -53,7 +53,8 @@ fun LoginScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding),
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -68,9 +69,19 @@ fun LoginScreen(
                     value = uiState.passwordState,
                     onValueChange = viewModel::onPasswordChange
                 )
+                if (uiState.errorState.isNotBlank()) {
+                    Text(
+                        text = uiState.errorState
+                    )
+                }
                 Button(
                     onClick = {
-                        viewModel.signIn(uiState.emailState, uiState.passwordState, onSuccess)
+                        viewModel.signIn(
+                            email = uiState.emailState,
+                            password = uiState.passwordState,
+                            onSuccess = onSuccess,
+                            onSignInFailure = viewModel::onError
+                        )
                     }
                 ) {
                     Text(
@@ -79,7 +90,12 @@ fun LoginScreen(
                 }
                 Button(
                     onClick = {
-                        viewModel.signUp(uiState.emailState, uiState.passwordState, onSuccess)
+                        viewModel.signUp(
+                            email = uiState.emailState,
+                            password = uiState.passwordState,
+                            onSuccess = onSuccess,
+                            onSignUpFailure = viewModel::onError
+                        )
                     }
                 ) {
                     Text(

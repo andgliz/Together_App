@@ -32,29 +32,55 @@ class LoginViewModel(
         )
     }
 
-    fun signUp(email: String, password: String, onSuccess: () -> Unit) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("MyLog", "Sign Up successful")
-                    onSuccess()
-                } else {
-                    Log.d("MyLog", "Sign Up failure")
-                }
-
-            }
+    fun onError(error: String) {
+        _uiState.value = _uiState.value.copy(
+            errorState = error
+        )
     }
 
-    fun signIn(email: String, password: String, onSuccess: () -> Unit) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("MyLog", "Sign In successful")
-                    onSuccess()
-                } else {
-                    Log.d("MyLog", "Sign In failure")
+    fun signUp(
+        email: String,
+        password: String,
+        onSuccess: () -> Unit,
+        onSignUpFailure: (String) -> Unit
+    ) {
+        if (email.isBlank() || password.isBlank()) {
+            onSignUpFailure("Email and password cannot be empty.")
+        } else {
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        _uiState.value = _uiState.value.copy(
+                            errorState = ""
+                        )
+                        onSuccess()
+                    }
+                }.addOnFailureListener {
+                    onSignUpFailure(it.message ?: "Sign Up Error.")
                 }
+        }
+    }
 
-            }
+    fun signIn(
+        email: String,
+        password: String,
+        onSuccess: () -> Unit,
+        onSignInFailure: (String) -> Unit
+    ) {
+        if (email.isBlank() || password.isBlank()) {
+            onSignInFailure("Email and password cannot be empty.")
+        } else {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        _uiState.value = _uiState.value.copy(
+                            errorState = ""
+                        )
+                        onSuccess()
+                    }
+                }.addOnFailureListener {
+                    onSignInFailure(it.message ?: "Sign In Error.")
+                }
+        }
     }
 }
