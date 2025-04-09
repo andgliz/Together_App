@@ -1,8 +1,6 @@
 package com.example.livingtogether.data
 
 import androidx.room.TypeConverter
-import java.util.Arrays
-import java.util.stream.Collectors
 
 class UserConverter {
     @TypeConverter
@@ -13,7 +11,7 @@ class UserConverter {
     @TypeConverter
     fun toUsers(data: String): User {
         val list = data.split(",")
-        return User(id = list[0].toInt(), name = list[1], total = list[2].toInt() )
+        return User(id = list[0].toInt(), name = list[1], total = list[2].toInt())
     }
 }
 
@@ -27,5 +25,18 @@ class HouseworkConverter {
     fun toHousework(data: String): Housework {
         val list = data.split(",")
         return Housework(id = list[0].toInt(), name = list[1], cost = list[2].toInt())
+    }
+}
+
+class FamilyConverter {
+    @TypeConverter
+    fun fromFamily(family: Family): String {
+        return family.id.toString() + "," + family.name
+    }
+
+    @TypeConverter
+    fun toFamily(data: String): Family {
+        val list = data.split(",")
+        return Family(id = list[0].toInt(), name = list[1])
     }
 }

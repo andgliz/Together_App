@@ -34,6 +34,14 @@ data class UsersHousework(
     val housework: Housework
 )
 
+@Entity(tableName = "family")
+data class Family(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    @ColumnInfo(name = "family_name")
+    val name: String
+)
+
 //@Entity
 //data class Rating(
 //    @PrimaryKey(autoGenerate = true)
