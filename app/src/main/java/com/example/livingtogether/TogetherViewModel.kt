@@ -4,10 +4,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.livingtogether.data.TogetherRepository
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.launch
 
 class TogetherViewModel(
     private val togetherRepository: TogetherRepository
@@ -17,7 +19,23 @@ class TogetherViewModel(
     var currentUser by mutableStateOf(auth.currentUser)
         private set
 
+    var isUserInFamily by mutableStateOf(false)
+        private set
+
     fun onChangeStatusOfAuth() {
         currentUser = auth.currentUser
     }
+
+    fun onChangeStatusOfFamily() {
+        viewModelScope.launch {
+            isUserInFamily = togetherRepository.getUserStream(currentUser?.email).family != null
+        }
+    }
+
+    init {
+        if (currentUser != null) {
+            onChangeStatusOfFamily()
+        }
+    }
+
 }

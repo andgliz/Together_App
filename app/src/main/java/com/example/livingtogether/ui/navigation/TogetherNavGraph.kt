@@ -19,6 +19,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.livingtogether.ui.BottomMenuItem
+import com.example.livingtogether.ui.family.FamilyDestination
+import com.example.livingtogether.ui.family.FamilyScreen
 import com.example.livingtogether.ui.housework.HouseworkDestination
 import com.example.livingtogether.ui.housework.HouseworkScreen
 import com.example.livingtogether.ui.login.LoginDestination
@@ -29,20 +31,23 @@ import com.example.livingtogether.ui.rating.RatingDestination
 import com.example.livingtogether.ui.rating.RatingScreen
 import com.example.livingtogether.ui.today.TodayDestination
 import com.example.livingtogether.ui.today.TodayScreen
+import kotlin.reflect.KFunction0
 
 @Composable
 fun TogetherNavGraph(
     navController: NavHostController,
     isAuth: Boolean,
     modifier: Modifier = Modifier,
-    onChangeStatusOfAuth: () -> Unit
+    onChangeStatusOfAuth: () -> Unit,
+    isUserInFamily: Boolean,
+    onChangeStatusOfFamily: KFunction0<Unit>
 ) {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
         NavHost(
             navController = navController,
-            startDestination = if (isAuth) RatingDestination.route else LoginDestination.route,
+            startDestination = if (!isAuth) LoginDestination.route else if (isUserInFamily) RatingDestination.route else FamilyDestination.route,
             modifier = modifier
         ) {
             composable(route = TodayDestination.route) {
@@ -79,6 +84,16 @@ fun TogetherNavGraph(
                     title = LoginDestination.titleRes,
                     onSuccess = {
                         onChangeStatusOfAuth()
+                        navController.navigate(if (isUserInFamily) RatingDestination.route else FamilyDestination.route)
+                    }
+                )
+            }
+
+            composable(route = FamilyDestination.route) {
+                FamilyScreen(
+                    title = FamilyDestination.titleRes,
+                    onSuccess = {
+                        onChangeStatusOfFamily()
                         navController.navigate(RatingDestination.route)
                     }
                 )

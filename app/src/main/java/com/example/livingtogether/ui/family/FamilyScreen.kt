@@ -32,7 +32,8 @@ object FamilyDestination : NavigationDestination {
 @Composable
 fun FamilyScreen(
     viewModel: FamilyViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    title: Int
+    title: Int,
+    onSuccess: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -75,24 +76,26 @@ fun FamilyScreen(
                     onClick = {
                         viewModel.onJoinTheFamilyButtonClicked(
                             name = uiState.nameState,
-                            password = uiState.passwordState
+                            password = uiState.passwordState,
+                            onSuccess = onSuccess
                         )
                     }
                 ) {
                     Text(
-                        text = "Sign In"
+                        text = "Join to the family"
                     )
                 }
                 Button(
                     onClick = {
                         viewModel.onCreateTheFamilyButtonClicked(
                             name = uiState.nameState,
-                            password = uiState.passwordState
+                            password = uiState.passwordState,
+                            onSuccess = onSuccess
                         )
                     }
                 ) {
                     Text(
-                        text = "Sign Up"
+                        text = "Create the family"
                     )
                 }
             }

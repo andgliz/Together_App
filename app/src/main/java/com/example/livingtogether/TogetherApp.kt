@@ -18,6 +18,8 @@ fun TogetherApp(
     viewModel: TogetherViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val currentUser = viewModel.currentUser
+    val isUserInFamily = viewModel.isUserInFamily
+
     val items = listOf(
         BottomMenuItem.RatingItem,
         BottomMenuItem.TodayItem,
@@ -38,7 +40,9 @@ fun TogetherApp(
         TogetherNavGraph(
             navController = navController,
             isAuth = currentUser != null,
-            onChangeStatusOfAuth = viewModel::onChangeStatusOfAuth
+            isUserInFamily = isUserInFamily,
+            onChangeStatusOfAuth = viewModel::onChangeStatusOfAuth,
+            onChangeStatusOfFamily = viewModel::onChangeStatusOfFamily
         )
     }
 }

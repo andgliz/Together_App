@@ -43,7 +43,8 @@ class FamilyViewModel(
 
     fun onJoinTheFamilyButtonClicked(
         name: String,
-        password: String
+        password: String,
+        onSuccess: () -> Unit
     ) {
         if (name.isBlank() || password.isBlank()) {
             onError("Name and password cannot be empty.")
@@ -59,6 +60,7 @@ class FamilyViewModel(
                         ),
                         email = currentUser?.email
                     )
+                    onSuccess()
                 } else {
                     onError("The family has not been found")
                 }
@@ -69,7 +71,8 @@ class FamilyViewModel(
 
     fun onCreateTheFamilyButtonClicked(
         name: String,
-        password: String
+        password: String,
+        onSuccess: () -> Unit
     ) {
         if (name.isBlank() || password.isBlank()) {
             onError("Name and password cannot be empty.")
@@ -83,6 +86,7 @@ class FamilyViewModel(
                     ),
                     email = currentUser?.email
                 )
+                onSuccess()
             }
         }
     }
