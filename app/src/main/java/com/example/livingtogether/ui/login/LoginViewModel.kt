@@ -2,7 +2,9 @@ package com.example.livingtogether.ui.login
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.livingtogether.data.TogetherRepository
+import com.example.livingtogether.data.User
 import com.example.livingtogether.ui.LoginUiState
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -10,6 +12,7 @@ import com.google.firebase.auth.auth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val togetherRepository: TogetherRepository
@@ -53,6 +56,7 @@ class LoginViewModel(
                         _uiState.value = _uiState.value.copy(
                             errorState = ""
                         )
+                        viewModelScope.launch { togetherRepository.insertIntoUserStream(user = User(email = email)) }
                         onSuccess()
                     }
                 }.addOnFailureListener {
