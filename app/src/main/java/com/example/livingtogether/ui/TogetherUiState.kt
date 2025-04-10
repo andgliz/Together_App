@@ -30,6 +30,12 @@ data class LoginUiState(
     val errorState: String = ""
 )
 
+data class FamilyUiState(
+    val nameState: String = "",
+    val passwordState: String = "",
+    val errorState: String = ""
+)
+
 data class HouseworkViewData(
     val id: Int = 0,
     val name: String = "",
@@ -84,14 +90,13 @@ fun Housework.toHouseworkViewData(): HouseworkViewData = HouseworkViewData(
 
 fun UserViewData.toUser(): User = User(
     id = id,
-    name = name,
-    total = total.toInt()
+    name = name
 )
 
 fun User.toUserViewData(): UserViewData = UserViewData(
     id = id,
     name = name,
-    total = total.toString()
+    total = "0"
 )
 
 fun UsersHouseworkViewData.toUsersHousework(): UsersHousework = UsersHousework(
