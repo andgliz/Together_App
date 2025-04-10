@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [Housework::class, User::class, UsersHousework::class], version = 1, exportSchema = false)
-@TypeConverters(HouseworkConverter::class, UserConverter::class)
+@Database(entities = [Housework::class, User::class, UsersHousework::class, Family::class], version = 1, exportSchema = false)
+@TypeConverters(HouseworkConverter::class, UserConverter::class, FamilyConverter::class)
 abstract class TogetherDatabase : RoomDatabase() {
 
     abstract fun togetherDao(): TogetherDao

@@ -9,14 +9,29 @@ import androidx.room.Update
 
 @Dao
 interface TogetherDao {
+    @Query("SELECT * FROM user WHERE email = :email")
+    suspend fun getUser(email: String?): User
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertIntoFamily(family: Family)
+
+    @Query("UPDATE user SET family = :family WHERE email = :email")
+    suspend fun addFamilyForUser(family: Family?, email: String?)
+
+    @Query("SELECT * FROM family WHERE family_name = :familyName")
+    suspend fun getFamilyData(familyName:String) : List<Family>
+
     @Query("SELECT * FROM users_housework WHERE user = :user")
     suspend fun getUsersData(user: User): List<UsersHousework>
 
     @Query("SELECT * FROM housework")
     suspend fun getHousework(): List<Housework>
 
-    @Query("SELECT * FROM user ORDER BY total DESC")
+    @Query("SELECT * FROM user")
     suspend fun getUsersRating(): List<User>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertIntoUser(user: User)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIntoHousework(housework: Housework)

@@ -2,6 +2,7 @@ package com.example.livingtogether.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "housework")
@@ -14,14 +15,16 @@ data class Housework(
     val cost: Int = 0
 )
 
-@Entity(tableName = "user")
+@Entity(tableName = "user", indices = [Index(value = ["email"], unique = true)])
 data class User(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo(name = "name")
     val name: String = "",
-    @ColumnInfo(name = "total")
-    val total: Int = 0
+    @ColumnInfo(name = "email")
+    val email: String? = "",
+    @ColumnInfo(name = "family")
+    val family: Family? = null
 )
 
 @Entity(tableName = "users_housework")
@@ -39,7 +42,9 @@ data class Family(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo(name = "family_name")
-    val name: String
+    val name: String,
+    @ColumnInfo(name = "family_password")
+    val password: String
 )
 
 //@Entity
