@@ -1,15 +1,16 @@
 package com.example.livingtogether.ui.today
 
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.livingtogether.data.TogetherRepository
-import com.example.livingtogether.data.User
 import com.example.livingtogether.ui.TodayUiState
 import com.example.livingtogether.ui.toUsersHouseworkViewData
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,8 +26,11 @@ class TodayViewModel(
         MutableStateFlow(TodayUiState())
     val uiState: StateFlow<TodayUiState> = _uiState.asStateFlow()
 
+    private var currentUser by mutableStateOf(Firebase.auth.currentUser)
+
     init {
-        initializeUiState()
+        currentUser = Firebase.auth.currentUser
+        initializeUiState(currentUser?.email)
         viewModelScope.launch {
             _uiState.collect { todayState ->
                 if (todayState.housework.isNotEmpty()) {
@@ -40,11 +44,11 @@ class TodayViewModel(
 //        }
     }
 
-    private fun initializeUiState() {
+    private fun initializeUiState(email: String?) {
         viewModelScope.launch {
             _uiState.value =
                 TodayUiState(
-                    housework = togetherRepository.getUsersDataStream(User(1, "user2", 30))
+                    housework = togetherRepository.getUsersDataStream(togetherRepository.getUserStream(email = email))
                         .map { it.toUsersHouseworkViewData() }
                 )
         }
