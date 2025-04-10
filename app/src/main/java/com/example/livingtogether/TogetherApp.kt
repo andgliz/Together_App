@@ -17,7 +17,7 @@ fun TogetherApp(
     navController: NavHostController = rememberNavController(),
     viewModel: TogetherViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val isAuth = viewModel.isAuth
+    val currentUser = viewModel.currentUser
     val items = listOf(
         BottomMenuItem.RatingItem,
         BottomMenuItem.TodayItem,
@@ -27,7 +27,7 @@ fun TogetherApp(
 
     Scaffold(
         bottomBar = {
-            if (isAuth) {
+            if (currentUser != null) {
                 NavigationBar(
                     items = items,
                     navController = navController
@@ -37,7 +37,7 @@ fun TogetherApp(
     ) {
         TogetherNavGraph(
             navController = navController,
-            isAuth = isAuth,
+            isAuth = currentUser != null,
             onChangeStatusOfAuth = viewModel::onChangeStatusOfAuth
         )
     }

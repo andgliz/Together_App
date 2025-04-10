@@ -42,6 +42,5 @@ class ProfileViewModel(
                 Log.d("MyLog", "Failure reathenticate")
             }
         }
-
     }
 }

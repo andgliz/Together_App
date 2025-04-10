@@ -14,10 +14,10 @@ class TogetherViewModel(
 ) : ViewModel() {
     private val auth: FirebaseAuth = Firebase.auth
 
-    var isAuth by mutableStateOf(auth.currentUser != null)
+    var currentUser by mutableStateOf(auth.currentUser)
         private set
 
     fun onChangeStatusOfAuth() {
-        isAuth = auth.currentUser != null
+        currentUser = auth.currentUser
     }
 }
