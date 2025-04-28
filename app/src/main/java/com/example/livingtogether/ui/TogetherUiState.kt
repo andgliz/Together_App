@@ -1,6 +1,7 @@
 package com.example.livingtogether.ui
 
 import com.example.livingtogether.R
+import com.example.livingtogether.data.Family
 import com.example.livingtogether.data.Housework
 import com.example.livingtogether.data.User
 import com.example.livingtogether.data.UsersHousework
@@ -39,13 +40,20 @@ data class FamilyUiState(
 data class HouseworkViewData(
     val id: Int = 0,
     val name: String = "",
-    val cost: String = ""
+    val cost: String = "",
 )
 
 data class UserViewData(
     val id: Int = 0,
     val name: String = "",
-    val total: String = ""
+    val email: String = "",
+    val family: FamilyViewData? = null
+)
+
+data class FamilyViewData(
+    val id: Int = 0,
+    val name: String = "",
+    val password: String = ""
 )
 
 data class UsersHouseworkViewData(
@@ -62,24 +70,28 @@ sealed class BottomMenuItem(
         navigation = RatingDestination,
         icon = R.drawable.rating
     )
+
     object TodayItem : BottomMenuItem(
         navigation = TodayDestination,
         icon = R.drawable.today
     )
+
     object HouseworkItem : BottomMenuItem(
         navigation = HouseworkDestination,
         icon = R.drawable.list
     )
+
     object ProfileItem : BottomMenuItem(
         navigation = ProfileDestination,
         icon = R.drawable.profile
     )
 }
 
-fun HouseworkViewData.toHousework(): Housework = Housework(
+fun HouseworkViewData.toHousework(family: Family): Housework = Housework(
     id = id,
     name = name,
-    cost = cost.toInt()
+    cost = cost.toInt(),
+    family = family
 )
 
 fun Housework.toHouseworkViewData(): HouseworkViewData = HouseworkViewData(
@@ -90,19 +102,29 @@ fun Housework.toHouseworkViewData(): HouseworkViewData = HouseworkViewData(
 
 fun UserViewData.toUser(): User = User(
     id = id,
-    name = name
+    name = name,
+    email = email,
+    family = family?.toFamily()
 )
 
 fun User.toUserViewData(): UserViewData = UserViewData(
     id = id,
     name = name,
-    total = "0"
+    email = email,
+    family = family?.toFamilyViewData()
 )
 
-fun UsersHouseworkViewData.toUsersHousework(): UsersHousework = UsersHousework(
+
+fun Family.toFamilyViewData(): FamilyViewData = FamilyViewData(
     id = id,
-    user = user.toUser(),
-    housework = housework.toHousework()
+    name = name,
+    password = password
+)
+
+fun FamilyViewData.toFamily(): Family = Family(
+    id = id,
+    name = name,
+    password = password
 )
 
 fun UsersHousework.toUsersHouseworkViewData(): UsersHouseworkViewData = UsersHouseworkViewData(
