@@ -10,9 +10,11 @@ data class Housework(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo(name = "name")
-    val name: String = "",
+    val name: String,
     @ColumnInfo(name = "cost")
-    val cost: Int = 0
+    val cost: Int = 0,
+    @ColumnInfo(name = "family")
+    val family: Family
 )
 
 @Entity(tableName = "user", indices = [Index(value = ["email"], unique = true)])
@@ -22,7 +24,7 @@ data class User(
     @ColumnInfo(name = "name")
     val name: String = "",
     @ColumnInfo(name = "email")
-    val email: String? = "",
+    val email: String,
     @ColumnInfo(name = "family")
     val family: Family? = null
 )

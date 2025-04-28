@@ -10,13 +10,13 @@ interface TogetherRepository {
 
     suspend fun addFamilyForUserStream(family: Family?, email: String?)
 
-    suspend fun getFamilyDataStream(familyName:String) : List<Family>
+    suspend fun getFamilyDataStream(familyName:String, inputPassword: String) : Family?
 
     suspend fun getUsersDataStream(user: User): List<UsersHousework>
 
-    suspend fun getHouseworkStream(): List<Housework>
+    suspend fun getHouseworkStream(family: Family): List<Housework>
 
-    suspend fun getUsersRatingStream(): List<User>
+    suspend fun getUsersRatingStream(family: Family): List<User>
 
     suspend fun insertIntoUserStream(user: User)
 

@@ -23,13 +23,13 @@ class UserConverter {
 class HouseworkConverter {
     @TypeConverter
     fun fromHousework(housework: Housework): String {
-        return housework.id.toString() + "," + housework.name + "," + housework.cost.toString()
+        return housework.id.toString() + "," + housework.name + "," + housework.cost.toString() + "," + housework.family
     }
 
     @TypeConverter
     fun toHousework(data: String): Housework {
         val list = data.split(",")
-        return Housework(id = list[0].toInt(), name = list[1], cost = list[2].toInt())
+        return Housework(id = list[0].toInt(), name = list[1], cost = list[2].toInt(), family = Family(id = list[3].toInt(), name = list[4], password = list[5]))
     }
 }
 

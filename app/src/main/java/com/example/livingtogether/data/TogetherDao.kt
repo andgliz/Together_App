@@ -18,17 +18,17 @@ interface TogetherDao {
     @Query("UPDATE user SET family = :family WHERE email = :email")
     suspend fun addFamilyForUser(family: Family?, email: String?)
 
-    @Query("SELECT * FROM family WHERE family_name = :familyName")
-    suspend fun getFamilyData(familyName:String) : List<Family>
+    @Query("SELECT * FROM family WHERE family_name = :familyName AND family_password = :inputPassword")
+    suspend fun getFamilyData(familyName:String, inputPassword: String) : Family?
 
     @Query("SELECT * FROM users_housework WHERE user = :user")
     suspend fun getUsersData(user: User): List<UsersHousework>
 
-    @Query("SELECT * FROM housework")
-    suspend fun getHousework(): List<Housework>
+    @Query("SELECT * FROM housework WHERE family = :family")
+    suspend fun getHousework(family: Family): List<Housework>
 
-    @Query("SELECT * FROM user")
-    suspend fun getUsersRating(): List<User>
+    @Query("SELECT * FROM user WHERE family = :family")
+    suspend fun getUsersRating(family: Family): List<User>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIntoUser(user: User)
@@ -41,4 +41,7 @@ interface TogetherDao {
 
     @Update
     suspend fun updateHousework(housework: Housework)
+
+    @Query("UPDATE user SET name = :name")
+    suspend fun updateUserName(name: String)
 }

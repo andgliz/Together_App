@@ -50,14 +50,9 @@ class FamilyViewModel(
             onError("Name and password cannot be empty.")
         } else {
             viewModelScope.launch {
-                if (togetherRepository.getFamilyDataStream(familyName = name)
-                        .contains(Family(name = name, password = password))
-                ) {
+                if (togetherRepository.getFamilyDataStream(familyName = name, inputPassword = password)  != null) {
                     togetherRepository.addFamilyForUserStream(
-                        family = Family(
-                            name = name,
-                            password = password
-                        ),
+                        family = togetherRepository.getFamilyDataStream(familyName = name, inputPassword = password),
                         email = currentUser?.email
                     )
                     onSuccess()

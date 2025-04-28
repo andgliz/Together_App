@@ -19,11 +19,18 @@ class TogetherViewModel(
     var currentUser by mutableStateOf(auth.currentUser)
         private set
 
-    var isUserInFamily by mutableStateOf(false)
+    var isUserInFamily by mutableStateOf(true)
         private set
+
+    init {
+        onChangeStatusOfAuth()
+    }
 
     fun onChangeStatusOfAuth() {
         currentUser = auth.currentUser
+        if (currentUser != null) {
+            onChangeStatusOfFamily()
+        }
     }
 
     fun onChangeStatusOfFamily() {
@@ -31,11 +38,4 @@ class TogetherViewModel(
             isUserInFamily = togetherRepository.getUserStream(currentUser?.email).family != null
         }
     }
-
-    init {
-        if (currentUser != null) {
-            onChangeStatusOfFamily()
-        }
-    }
-
 }
