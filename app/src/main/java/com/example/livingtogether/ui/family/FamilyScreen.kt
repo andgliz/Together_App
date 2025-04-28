@@ -26,7 +26,7 @@ import com.example.livingtogether.ui.navigation.NavigationDestination
 
 object FamilyDestination : NavigationDestination {
     override val route = "family"
-    override val titleRes = R.string.today
+    override val titleRes = R.string.family
 }
 
 @Composable

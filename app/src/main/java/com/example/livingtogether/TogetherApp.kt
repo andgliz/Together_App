@@ -29,7 +29,7 @@ fun TogetherApp(
 
     Scaffold(
         bottomBar = {
-            if (currentUser != null) {
+            if (currentUser != null && isUserInFamily) {
                 NavigationBar(
                     items = items,
                     navController = navController

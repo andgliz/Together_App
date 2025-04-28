@@ -97,7 +97,7 @@ fun UserItem(
             modifier = Modifier.weight(1f)
         )
         Text(
-            text = user.total,
+            text = "0",
             modifier = Modifier.weight(1f)
         )
     }
