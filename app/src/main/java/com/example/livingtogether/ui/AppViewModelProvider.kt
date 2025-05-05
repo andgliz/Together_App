@@ -16,7 +16,8 @@ object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
             TodayViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.togetherRepository
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.togetherRepository,
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository
             )
         }
         initializer {
@@ -31,17 +32,19 @@ object AppViewModelProvider {
         }
         initializer {
             ProfileViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.togetherRepository
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.togetherRepository,
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository
             )
         }
         initializer {
             LoginViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.togetherRepository
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository
             )
         }
         initializer {
             TogetherViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.togetherRepository
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.togetherRepository,
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository
             )
         }
         initializer {

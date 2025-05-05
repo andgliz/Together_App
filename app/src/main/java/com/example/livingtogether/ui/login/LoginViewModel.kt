@@ -1,24 +1,17 @@
 package com.example.livingtogether.ui.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.livingtogether.data.TogetherRepository
-import com.example.livingtogether.data.User
+import com.example.livingtogether.data.repository.AuthRepository
 import com.example.livingtogether.ui.LoginUiState
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val togetherRepository: TogetherRepository
+    private val authRepository: AuthRepository
 ) : ViewModel() {
-
-    private val auth: FirebaseAuth = Firebase.auth
 
     private val _uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
@@ -35,7 +28,7 @@ class LoginViewModel(
         )
     }
 
-    fun onError(error: String) {
+    private fun onError(error: String) {
         _uiState.value = _uiState.value.copy(
             errorState = error
         )
@@ -45,46 +38,40 @@ class LoginViewModel(
         email: String,
         password: String,
         onSuccess: () -> Unit,
-        onSignUpFailure: (String) -> Unit
     ) {
         if (email.isBlank() || password.isBlank()) {
-            onSignUpFailure("Email and password cannot be empty.")
+            onError("Email and password cannot be empty.")
         } else {
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        _uiState.value = _uiState.value.copy(
-                            errorState = ""
-                        )
-                        viewModelScope.launch { togetherRepository.insertIntoUserStream(user = User(email = email)) }
-                        onSuccess()
-                    }
-                }.addOnFailureListener {
-                    onSignUpFailure(it.message ?: "Sign Up Error.")
+            viewModelScope.launch {
+                val result = authRepository.signUp(email, password)
+                if (result.isNotBlank()) {
+                    onError(result)
+                } else {
+                    onError("")
+                    onSuccess()
                 }
+            }
+
         }
     }
 
     fun signIn(
         email: String,
         password: String,
-        onSuccess: () -> Unit,
-        onSignInFailure: (String) -> Unit
+        onSuccess: () -> Unit
     ) {
         if (email.isBlank() || password.isBlank()) {
-            onSignInFailure("Email and password cannot be empty.")
+            onError("Email and password cannot be empty.")
         } else {
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        _uiState.value = _uiState.value.copy(
-                            errorState = ""
-                        )
-                        onSuccess()
-                    }
-                }.addOnFailureListener {
-                    onSignInFailure(it.message ?: "Sign In Error.")
+            viewModelScope.launch {
+                val result = authRepository.signIn(email, password)
+                if (result.isNotBlank()) {
+                    onError(result)
+                } else {
+                    onError("")
+                    onSuccess()
                 }
+            }
         }
     }
 }

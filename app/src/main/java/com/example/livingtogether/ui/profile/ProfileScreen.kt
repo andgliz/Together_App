@@ -57,7 +57,7 @@ fun ProfileScreen(
                     )
                 }
                 Button(
-                    onClick = { viewModel.onDeleteAccountClicked(uiState.emailState, uiState.passwordState, onSuccess) }
+                    onClick = { viewModel.onDeleteAccountClicked() }
                 ) {
                     Text(
                         text = "Delete Account"
