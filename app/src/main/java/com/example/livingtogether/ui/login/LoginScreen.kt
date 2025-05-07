@@ -79,8 +79,7 @@ fun LoginScreen(
                         viewModel.signIn(
                             email = uiState.emailState,
                             password = uiState.passwordState,
-                            onSuccess = onSuccess,
-                            onSignInFailure = viewModel::onError
+                            onSuccess = onSuccess
                         )
                     }
                 ) {
@@ -93,8 +92,7 @@ fun LoginScreen(
                         viewModel.signUp(
                             email = uiState.emailState,
                             password = uiState.passwordState,
-                            onSuccess = onSuccess,
-                            onSignUpFailure = viewModel::onError
+                            onSuccess = onSuccess
                         )
                     }
                 ) {

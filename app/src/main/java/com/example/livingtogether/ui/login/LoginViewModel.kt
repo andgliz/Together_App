@@ -2,15 +2,20 @@ package com.example.livingtogether.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.livingtogether.data.model.User
 import com.example.livingtogether.data.repository.AuthRepository
+import com.example.livingtogether.data.repository.UserRepository
 import com.example.livingtogether.ui.LoginUiState
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState())
@@ -48,10 +53,10 @@ class LoginViewModel(
                     onError(result)
                 } else {
                     onError("")
+                    userRepository.createUser(User(id = Firebase.auth.currentUser!!.uid, email = email))
                     onSuccess()
                 }
             }
-
         }
     }
 
