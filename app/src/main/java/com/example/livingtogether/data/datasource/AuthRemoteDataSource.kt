@@ -1,6 +1,5 @@
 package com.example.livingtogether.data.datasource
 
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
@@ -10,6 +9,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class AuthRemoteDataSource(private val auth: FirebaseAuth) {
+
     val currentUser: FirebaseUser? get() = auth.currentUser
 
     val currentUserIdFlow: Flow<String?>
@@ -37,11 +37,6 @@ class AuthRemoteDataSource(private val auth: FirebaseAuth) {
             error = e.message ?: "Sign In Error."
         }
         return error
-    }
-
-    suspend fun linkAccount(email: String, password: String) {
-        val credential = EmailAuthProvider.getCredential(email, password)
-        auth.currentUser!!.linkWithCredential(credential).await()
     }
 
     fun signOut() {

@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 class OfflineAuthRepository(private val authRemoteDataSource: AuthRemoteDataSource) :
     AuthRepository {
-    override val currentUser: FirebaseUser? = authRemoteDataSource.currentUser
+    override val currentUser: FirebaseUser? get() = authRemoteDataSource.currentUser
 
-    override val currentUserIdFlow: Flow<String?> = authRemoteDataSource.currentUserIdFlow
+    override val currentUserIdFlow: Flow<String?> get() = authRemoteDataSource.currentUserIdFlow
 
     override suspend fun signUp(email: String, password: String): String {
         return authRemoteDataSource.signUp(email, password)
