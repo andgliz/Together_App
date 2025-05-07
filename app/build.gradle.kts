@@ -56,6 +56,7 @@ dependencies {
     //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.firestore.ktx)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
