@@ -5,41 +5,46 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.livingtogether.data.TogetherRepository
 import com.example.livingtogether.data.repository.AuthRepository
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-import kotlinx.coroutines.flow.first
+import com.example.livingtogether.data.repository.UserRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class TogetherViewModel(
-    private val togetherRepository: TogetherRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
-    var currentUser by mutableStateOf(authRepository.currentUserIdFlow)
+    var isUserAuthorized by mutableStateOf(authRepository.currentUser != null)
         private set
 
-    var isUserInFamily by mutableStateOf(true)
+    var isUserInFamily by mutableStateOf(false)
         private set
+
+    private var statusOfFamilyJob: Job? = null
 
     init {
-        onChangeStatusOfAuth()
-    }
-
-    fun onChangeStatusOfAuth() {
-        currentUser = authRepository.currentUserIdFlow
         viewModelScope.launch {
-            if (currentUser.first() != null) {
-                onChangeStatusOfFamily()
+            authRepository.currentUserIdFlow.collect { userId ->
+                if (userId != null) {
+                    isUserAuthorized = true
+                    statusOfFamily(userId)
+                } else {
+                    statusOfFamilyJob?.cancel()
+                    statusOfFamilyJob = null
+                    isUserAuthorized = false
+                    isUserInFamily = false
+                }
             }
         }
     }
 
-    fun onChangeStatusOfFamily() {
-        viewModelScope.launch {
-            isUserInFamily = togetherRepository.getUserStream(authRepository.currentUser?.email).family != null
+    private fun statusOfFamily(userId: String) {
+        statusOfFamilyJob = viewModelScope.launch {
+            userRepository.getUserFlow(userId).collect { user ->
+                isUserInFamily = !user?.family.isNullOrEmpty()
+            }
         }
+
     }
 }

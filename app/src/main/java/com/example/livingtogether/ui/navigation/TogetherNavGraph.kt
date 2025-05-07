@@ -38,9 +38,7 @@ fun TogetherNavGraph(
     navController: NavHostController,
     isAuth: Boolean,
     modifier: Modifier = Modifier,
-    onChangeStatusOfAuth: () -> Unit,
-    isUserInFamily: Boolean,
-    onChangeStatusOfFamily: KFunction0<Unit>
+    isUserInFamily: Boolean
 ) {
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -73,7 +71,6 @@ fun TogetherNavGraph(
                 ProfileScreen(
                     title = ProfileDestination.titleRes,
                     onSuccess = {
-                        onChangeStatusOfAuth()
                         navController.navigate(LoginDestination.route)
                     }
                 )
@@ -83,7 +80,6 @@ fun TogetherNavGraph(
                 LoginScreen(
                     title = LoginDestination.titleRes,
                     onSuccess = {
-                        onChangeStatusOfAuth()
                         navController.navigate(if (isUserInFamily) RatingDestination.route else FamilyDestination.route)
                     }
                 )
@@ -93,7 +89,6 @@ fun TogetherNavGraph(
                 FamilyScreen(
                     title = FamilyDestination.titleRes,
                     onSuccess = {
-                        onChangeStatusOfFamily()
                         navController.navigate(RatingDestination.route)
                     }
                 )
