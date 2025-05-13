@@ -46,7 +46,6 @@ class UserRemoteDataSource(private val firestore: FirebaseFirestore) {
 
     companion object {
         private const val FAMILY_ID = "family"
-        private const val USER_UID = "uid"
         private const val USERS_COLLECTION = "users"
     }
 }

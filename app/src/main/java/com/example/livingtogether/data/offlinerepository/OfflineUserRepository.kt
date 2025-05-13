@@ -29,6 +29,6 @@ class OfflineUserRepository(private val userRemoteDataSource: UserRemoteDataSour
     }
 
     override suspend fun deleteUser(userId: String) {
-        deleteUser(userId)
+        userRemoteDataSource.deleteUser(userId)
     }
 }
