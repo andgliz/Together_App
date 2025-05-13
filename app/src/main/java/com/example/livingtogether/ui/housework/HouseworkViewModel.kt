@@ -1,85 +1,80 @@
 package com.example.livingtogether.ui.housework
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.livingtogether.data.Family
-import com.example.livingtogether.data.TogetherRepository
+import com.example.livingtogether.data.repository.AuthRepository
+import com.example.livingtogether.data.repository.HouseworkRepository
+import com.example.livingtogether.data.repository.UserRepository
 import com.example.livingtogether.ui.HouseworkUiState
 import com.example.livingtogether.ui.HouseworkViewData
 import com.example.livingtogether.ui.toHousework
 import com.example.livingtogether.ui.toHouseworkViewData
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class HouseworkViewModel(
-    private val togetherRepository: TogetherRepository
+    private val houseworkRepository: HouseworkRepository,
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
-    private var currentUser by mutableStateOf(Firebase.auth.currentUser)
+    private var currentUserFamily = ""
 
     private val _uiState: MutableStateFlow<HouseworkUiState> = MutableStateFlow(HouseworkUiState())
     val uiState: StateFlow<HouseworkUiState> = _uiState.asStateFlow()
 
     init {
-        initializeUiState()
-    }
-
-    private suspend fun getCurrentUserFamily(): Family {
-        return togetherRepository.getUserStream(currentUser?.email).family!!
-    }
-
-    private fun initializeUiState() {
         viewModelScope.launch {
-            _uiState.value =
-                HouseworkUiState(
-                    houseworkList = togetherRepository.getHouseworkStream(getCurrentUserFamily())
-                        .map { it.toHouseworkViewData() }
-                )
+            currentUserFamily =
+                userRepository.getUser(authRepository.currentUser!!.uid)!!.family
+            initializeUiState(currentUserFamily)
+        }
+    }
+
+    private fun initializeUiState(currentUserFamily: String) {
+        viewModelScope.launch {
+            houseworkRepository.getHouseworkListFlow(currentUserFamily).collect { housework ->
+                _uiState.value =
+                    HouseworkUiState(
+                        houseworkList = housework.map { it.toHouseworkViewData() }
+                    )
+            }
         }
     }
 
     fun updateUiState(housework: HouseworkViewData) {
         viewModelScope.launch {
-            _uiState.value = HouseworkUiState(
+            _uiState.value = _uiState.value.copy(
                 houseworkInput = housework,
-                isEnabled = isValidInput(housework),
-                houseworkList = togetherRepository.getHouseworkStream(getCurrentUserFamily())
-                    .map { it.toHouseworkViewData() }
+                isEnabled = isValidInput(housework)
             )
         }
-
     }
 
     fun onAddHouseworkClicked() {
         viewModelScope.launch {
-            togetherRepository.insertIntoHouseworkStream(
-                _uiState.value.houseworkInput.toHousework(getCurrentUserFamily())
+            houseworkRepository.createHousework(
+                _uiState.value.houseworkInput.toHousework(
+                    currentUserFamily
+                )
             )
-            initializeUiState()
         }
     }
 
     fun onDeleteHouseworkClicked(housework: HouseworkViewData) {
         viewModelScope.launch {
-            togetherRepository.deleteFromHouseworkStream(
-                housework.toHousework(getCurrentUserFamily())
-            )
-            initializeUiState()
+            houseworkRepository.deleteHousework(housework.toHousework(currentUserFamily).id)
         }
     }
 
     fun onHouseworkClicked() {
         viewModelScope.launch {
-            togetherRepository.updateHouseworkStream(
-                _uiState.value.houseworkInput.toHousework(getCurrentUserFamily())
+            houseworkRepository.updateHousework(
+                _uiState.value.houseworkInput.toHousework(
+                    currentUserFamily
+                )
             )
-            initializeUiState()
         }
     }
 

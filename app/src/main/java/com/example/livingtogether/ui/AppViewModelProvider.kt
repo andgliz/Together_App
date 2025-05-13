@@ -22,7 +22,9 @@ object AppViewModelProvider {
         }
         initializer {
             HouseworkViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.togetherRepository
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.houseworkRepository,
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.userRepository,
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository
             )
         }
         initializer {
@@ -33,7 +35,8 @@ object AppViewModelProvider {
         }
         initializer {
             ProfileViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository,
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.userRepository
             )
         }
         initializer {
