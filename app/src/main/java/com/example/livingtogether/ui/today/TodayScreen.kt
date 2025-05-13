@@ -93,11 +93,11 @@ fun DoneList(
             items(housework) { housework ->
                 Row {
                     Text(
-                        text = housework.housework.name,
+                        text = housework.name,
                         modifier = Modifier.weight(1f)
                     )
                     Text(
-                        text = housework.housework.cost,
+                        text = housework.cost,
                         modifier = Modifier.weight(1f)
                     )
                 }

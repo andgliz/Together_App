@@ -7,6 +7,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.livingtogether.data.TogetherRepository
+import com.example.livingtogether.data.repository.AuthRepository
+import com.example.livingtogether.data.repository.HouseworkRepository
+import com.example.livingtogether.data.repository.UsersHouseworkRepository
 import com.example.livingtogether.ui.TodayUiState
 import com.example.livingtogether.ui.toUsersHouseworkViewData
 import com.google.firebase.Firebase
@@ -17,7 +20,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class TodayViewModel(
-    private val togetherRepository: TogetherRepository
+    private val authRepository: AuthRepository,
+    private val usersHouseworkRepository: UsersHouseworkRepository,
+    private val houseworkRepository: HouseworkRepository
 ) : ViewModel() {
     var total by mutableIntStateOf(0)
         private set
@@ -26,15 +31,16 @@ class TodayViewModel(
         MutableStateFlow(TodayUiState())
     val uiState: StateFlow<TodayUiState> = _uiState.asStateFlow()
 
-    private var currentUser by mutableStateOf(Firebase.auth.currentUser)
+    private var currentUserId by mutableStateOf(authRepository.currentUser!!.uid)
 
     init {
-        currentUser = Firebase.auth.currentUser
-        initializeUiState(currentUser?.email)
+        initializeUiState(currentUserId)
         viewModelScope.launch {
             _uiState.collect { todayState ->
                 if (todayState.housework.isNotEmpty()) {
-                    total = todayState.housework. sumOf { it.housework.cost.toInt() }
+                    total = todayState.housework.sumOf {
+                        houseworkRepository.getHouseworkItem(it.id)!!.cost
+                    }
                 }
             }
         }
@@ -44,13 +50,19 @@ class TodayViewModel(
 //        }
     }
 
-    private fun initializeUiState(email: String?) {
+    private fun initializeUiState(currentUserId: String) {
         viewModelScope.launch {
-            _uiState.value =
-                TodayUiState(
-                    housework = togetherRepository.getUsersDataStream(togetherRepository.getUserStream(email = email))
-                        .map { it.toUsersHouseworkViewData() }
-                )
+            usersHouseworkRepository.getUsersHouseworkListFlow(currentUserId)
+                .collect { usersHousework ->
+                    _uiState.value =
+                        TodayUiState(
+                            housework = usersHousework.map {
+                                houseworkRepository.getHouseworkItem(it.userId)!!
+                                    .toUsersHouseworkViewData()
+                            }
+                        )
+                }
+
         }
     }
 

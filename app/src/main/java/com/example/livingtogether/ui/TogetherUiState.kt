@@ -2,7 +2,6 @@ package com.example.livingtogether.ui
 
 import com.example.livingtogether.R
 import com.example.livingtogether.data.model.Housework
-import com.example.livingtogether.data.model.UsersHousework
 import com.example.livingtogether.data.model.Family
 import com.example.livingtogether.data.model.User
 import com.example.livingtogether.ui.housework.HouseworkDestination
@@ -58,8 +57,8 @@ data class FamilyViewData(
 
 data class UsersHouseworkViewData(
     val id: String = "",
-    val user: UserViewData = UserViewData(),
-    val housework: HouseworkViewData = HouseworkViewData()
+    val name: String = "",
+    val cost: String = ""
 )
 
 sealed class BottomMenuItem(
@@ -114,7 +113,6 @@ fun User.toUserViewData(): UserViewData = UserViewData(
     family = family
 )
 
-
 fun Family.toFamilyViewData(): FamilyViewData = FamilyViewData(
     id = id,
     name = name,
@@ -127,7 +125,8 @@ fun FamilyViewData.toFamily(): Family = Family(
     password = password
 )
 
-fun UsersHousework.toUsersHouseworkViewData(): UsersHouseworkViewData = UsersHouseworkViewData(
-    id = id
+fun Housework.toUsersHouseworkViewData(): UsersHouseworkViewData = UsersHouseworkViewData(
+    id = id,
+    name = name,
+    cost = cost.toString()
 )
-
