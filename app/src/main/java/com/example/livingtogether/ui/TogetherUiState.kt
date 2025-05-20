@@ -11,7 +11,8 @@ import com.example.livingtogether.ui.rating.RatingDestination
 import com.example.livingtogether.ui.today.TodayDestination
 
 data class TodayUiState(
-    val housework: List<UsersHouseworkViewData> = listOf()
+    val housework: List<HouseworkViewData> = listOf(),
+    val houseworkList: List<HouseworkViewData> = listOf()
 )
 
 data class HouseworkUiState(
@@ -38,6 +39,7 @@ data class FamilyUiState(
 
 data class HouseworkViewData(
     val id: String = "",
+    val houseworkId: String = "",
     val name: String = "",
     val cost: String = "",
 )
@@ -57,8 +59,8 @@ data class FamilyViewData(
 
 data class UsersHouseworkViewData(
     val id: String = "",
-    val name: String = "",
-    val cost: String = ""
+    val userId: String = "",
+    val houseworkId: String = ""
 )
 
 sealed class BottomMenuItem(
@@ -125,8 +127,8 @@ fun FamilyViewData.toFamily(): Family = Family(
     password = password
 )
 
-fun Housework.toUsersHouseworkViewData(): UsersHouseworkViewData = UsersHouseworkViewData(
-    id = id,
-    name = name,
-    cost = cost.toString()
-)
+//fun Housework.toUsersHouseworkViewData(): UsersHouseworkViewData = UsersHouseworkViewData(
+//    id = id,
+//    name = name,
+//    cost = cost.toString()
+//)
