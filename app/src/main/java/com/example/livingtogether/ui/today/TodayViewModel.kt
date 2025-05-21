@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class TodayViewModel(
     private val authRepository: AuthRepository,
@@ -84,7 +85,8 @@ class TodayViewModel(
             usersHouseworkRepository.createUsersHousework(
                 UsersHousework(
                     userId = currentUserId,
-                    houseworkId = housework.id
+                    houseworkId = housework.id,
+                    date = LocalDate.now().toString()
                 )
             )
         }

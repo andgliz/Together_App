@@ -46,7 +46,7 @@ class AppDataContainer(private val context: Context) : AppContainer {
     }
 
     override val houseworkRepository: HouseworkRepository by lazy {
-        OfflineHouseworkRepository(HouseworkRemoteDataSource(FirebaseFirestore.getInstance()))
+        OfflineHouseworkRepository(HouseworkRemoteDataSource(FirebaseFirestore.getInstance()), UsersHouseworkRemoteDataSource(FirebaseFirestore.getInstance()))
     }
 
     override val usersHouseworkRepository: UsersHouseworkRepository by lazy {
