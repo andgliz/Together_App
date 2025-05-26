@@ -7,15 +7,15 @@ import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
-import java.time.LocalDate
+import java.util.Date
 
 class UsersHouseworkRemoteDataSource(private val firestore: FirebaseFirestore) {
 
-    fun getUsersHouseworkListFlow(currentUserId: String): Flow<List<UsersHousework>> {
+    fun getUsersHouseworkListFlow(currentUserId: String, date: Date): Flow<List<UsersHousework>> {
         return firestore
             .collection(USERS_HOUSEWORK_COLLECTION)
             .whereEqualTo(USER_ID, currentUserId)
-            .whereEqualTo(DATE, LocalDate.now().toString())
+            .whereEqualTo(DATE, date)
             .dataObjects()
     }
 

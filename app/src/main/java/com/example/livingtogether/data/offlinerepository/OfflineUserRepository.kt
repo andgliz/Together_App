@@ -8,12 +8,16 @@ import kotlinx.coroutines.flow.Flow
 class OfflineUserRepository(private val userRemoteDataSource: UserRemoteDataSource) :
     UserRepository {
 
-    override fun getUsersFromFamilyList(currentUsersFamily: String): Flow<List<User>> {
-        return userRemoteDataSource.getUsersFromFamilyList(currentUsersFamily)
+    override fun getAllFromFamilyFlow(currentUsersFamily: String): Flow<List<User>> {
+        return userRemoteDataSource.getAllFromFamilyFlow(currentUsersFamily)
     }
 
     override fun getUserFlow(currentUserId: String): Flow<User?> {
         return userRemoteDataSource.getUserFlow(currentUserId)
+    }
+
+    override suspend fun getAllFromFamily(currentUsersFamily: String): List<User> {
+        return userRemoteDataSource.getAllFromFamily(currentUsersFamily)
     }
 
     override suspend fun getUser(currentUserId: String): User? {

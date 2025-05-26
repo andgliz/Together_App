@@ -1,14 +1,16 @@
 package com.example.livingtogether.ui
 
 import com.example.livingtogether.R
-import com.example.livingtogether.data.model.Housework
 import com.example.livingtogether.data.model.Family
+import com.example.livingtogether.data.model.Housework
+import com.example.livingtogether.data.model.Rating
 import com.example.livingtogether.data.model.User
 import com.example.livingtogether.ui.housework.HouseworkDestination
 import com.example.livingtogether.ui.navigation.NavigationDestination
 import com.example.livingtogether.ui.profile.ProfileDestination
 import com.example.livingtogether.ui.rating.RatingDestination
 import com.example.livingtogether.ui.today.TodayDestination
+import java.util.Date
 
 data class TodayUiState(
     val housework: List<HouseworkViewData> = listOf(),
@@ -21,8 +23,15 @@ data class HouseworkUiState(
     val isEnabled: Boolean = false
 )
 
+data class UserToRatingData(
+    val userName: String,
+    val totalRating: Int,
+)
+
 data class RatingUiState(
-    val usersList: List<UserViewData> = listOf()
+    val userToRatings: List<UserToRatingData> = listOf(),
+    val startDate: Date,
+    val endDate: Date,
 )
 
 data class LoginUiState(
@@ -55,6 +64,13 @@ data class FamilyViewData(
     val id: String = "",
     val name: String = "",
     val password: String = ""
+)
+
+data class RatingViewData(
+    val id: String = "",
+    val total: Int = 0,
+    val date: Date = Date(),
+    val userId: String = ""
 )
 
 data class UsersHouseworkViewData(
@@ -125,6 +141,20 @@ fun FamilyViewData.toFamily(): Family = Family(
     id = id,
     name = name,
     password = password
+)
+
+fun Rating.toRatingViewData(): RatingViewData = RatingViewData(
+    id = id,
+    userId = userId,
+    total = total,
+    date = date
+)
+
+fun RatingViewData.toRating(): Rating = Rating(
+    id = id,
+    userId = userId,
+    total = total,
+    date = date
 )
 
 //fun Housework.toUsersHouseworkViewData(): UsersHouseworkViewData = UsersHouseworkViewData(

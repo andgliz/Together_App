@@ -6,9 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.livingtogether.data.model.Rating
 import com.example.livingtogether.data.model.UsersHousework
 import com.example.livingtogether.data.repository.AuthRepository
 import com.example.livingtogether.data.repository.HouseworkRepository
+import com.example.livingtogether.data.repository.RatingRepository
 import com.example.livingtogether.data.repository.UserRepository
 import com.example.livingtogether.data.repository.UsersHouseworkRepository
 import com.example.livingtogether.ui.HouseworkViewData
@@ -18,13 +20,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class TodayViewModel(
     private val authRepository: AuthRepository,
     private val usersHouseworkRepository: UsersHouseworkRepository,
     private val houseworkRepository: HouseworkRepository,
     private val userRepository: UserRepository,
+    private val ratingRepository: RatingRepository
 ) : ViewModel() {
     var total by mutableIntStateOf(0)
         private set
@@ -34,6 +39,7 @@ class TodayViewModel(
     val uiState: StateFlow<TodayUiState> = _uiState.asStateFlow()
 
     private var currentUserId by mutableStateOf(authRepository.currentUser!!.uid)
+    private var currentDate by mutableStateOf(Date(convertMillisToDate(System.currentTimeMillis())))
 
     init {
         initializeUiState()
@@ -51,7 +57,7 @@ class TodayViewModel(
 
     private fun initializeUiState() {
         viewModelScope.launch {
-            usersHouseworkRepository.getUsersHouseworkListFlow(currentUserId)
+            usersHouseworkRepository.getUsersHouseworkListFlow(currentUserId, currentDate)
                 .collect { usersHousework ->
                     _uiState.value = _uiState.value.copy(housework = usersHousework.map {
                         HouseworkViewData(
@@ -86,7 +92,14 @@ class TodayViewModel(
                 UsersHousework(
                     userId = currentUserId,
                     houseworkId = housework.id,
-                    date = LocalDate.now().toString()
+                    date = currentDate
+                )
+            )
+            ratingRepository.addForDate(
+                Rating(
+                    userId = currentUserId,
+                    date = currentDate,
+                    total = housework.cost.toInt()
                 )
             )
         }
@@ -96,5 +109,10 @@ class TodayViewModel(
         viewModelScope.launch {
             usersHouseworkRepository.deleteUsersHousework(housework.id)
         }
+    }
+
+    private fun convertMillisToDate(millis: Long): String {
+        val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+        return formatter.format(millis)
     }
 }

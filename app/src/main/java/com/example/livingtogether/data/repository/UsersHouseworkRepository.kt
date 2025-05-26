@@ -2,9 +2,10 @@ package com.example.livingtogether.data.repository
 
 import com.example.livingtogether.data.model.UsersHousework
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 interface UsersHouseworkRepository {
-    fun getUsersHouseworkListFlow(currentUserId: String) : Flow<List<UsersHousework>>
+    fun getUsersHouseworkListFlow(currentUserId: String, date: Date) : Flow<List<UsersHousework>>
 
     suspend fun getUsersHouseworkItem(usersHouseworkId: String): UsersHousework?
 

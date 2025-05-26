@@ -5,9 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    fun getUsersFromFamilyList(currentUsersFamily: String) : Flow<List<User>>
+    fun getAllFromFamilyFlow(currentUsersFamily: String) : Flow<List<User>>
 
     fun getUserFlow(currentUserId: String): Flow<User?>
+
+    suspend fun getAllFromFamily(currentUsersFamily: String): List<User>
 
     suspend fun getUser(currentUserId: String): User?
 

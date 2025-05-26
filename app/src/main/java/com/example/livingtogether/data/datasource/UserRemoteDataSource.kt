@@ -9,7 +9,7 @@ import kotlinx.coroutines.tasks.await
 
 class UserRemoteDataSource(private val firestore: FirebaseFirestore) {
 
-    fun getUsersFromFamilyList(currentUsersFamily: String): Flow<List<User>> {
+    fun getAllFromFamilyFlow(currentUsersFamily: String): Flow<List<User>> {
         return firestore
             .collection(USERS_COLLECTION)
             .whereEqualTo(FAMILY_ID, currentUsersFamily)
@@ -21,6 +21,15 @@ class UserRemoteDataSource(private val firestore: FirebaseFirestore) {
             .collection(USERS_COLLECTION)
             .document(currentUserId)
             .dataObjects<User>()
+    }
+
+    suspend fun getAllFromFamily(currentUsersFamily: String): List<User> {
+        return firestore
+            .collection(USERS_COLLECTION)
+            .whereEqualTo(FAMILY_ID, currentUsersFamily)
+            .get()
+            .await()
+            .map { it.toObject<User>() }
     }
 
     suspend fun getUser(currentUserId: String): User? {
