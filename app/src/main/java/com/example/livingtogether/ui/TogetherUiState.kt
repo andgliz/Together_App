@@ -14,7 +14,8 @@ import java.util.Date
 
 data class TodayUiState(
     val housework: List<HouseworkViewData> = listOf(),
-    val houseworkList: List<HouseworkViewData> = listOf()
+    val houseworkList: List<HouseworkViewData> = listOf(),
+    val selectedDate: String = ""
 )
 
 data class HouseworkUiState(
@@ -38,6 +39,11 @@ data class LoginUiState(
     val emailState: String = "",
     val passwordState: String = "",
     val errorState: String = ""
+)
+
+data class ProfileUiState(
+    val user: UserViewData = UserViewData(),
+    val userName: String = "",
 )
 
 data class FamilyUiState(
@@ -119,14 +125,14 @@ fun Housework.toHouseworkViewData(): HouseworkViewData = HouseworkViewData(
 
 fun UserViewData.toUser(): User = User(
     id = id,
-    displayName = name,
+    userName = name,
     email = email,
     family = family
 )
 
 fun User.toUserViewData(): UserViewData = UserViewData(
     id = id,
-    name = displayName,
+    name = userName,
     email = email,
     family = family
 )

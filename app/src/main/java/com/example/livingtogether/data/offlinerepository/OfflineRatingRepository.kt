@@ -22,7 +22,7 @@ class OfflineRatingRepository(private val ratingRemoteDataSource: RatingRemoteDa
         ratingRemoteDataSource.addForDate(rating)
     }
 
-    override suspend fun updateTotalSum(rating: Rating) {
-        ratingRemoteDataSource.updateTotalSum(rating)
+    override suspend fun addOrUpdateForDate(rating: Rating) {
+        ratingRemoteDataSource.addOrUpdateForDate(rating)
     }
 }

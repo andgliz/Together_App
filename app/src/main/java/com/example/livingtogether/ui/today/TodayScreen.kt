@@ -4,14 +4,18 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -55,17 +59,29 @@ fun TodayScreen(
             val todayUiState by viewModel.uiState.collectAsState()
             val total = viewModel.total
             val openHouseworkListDialog = remember { mutableStateOf(false) }
+            val showModal = remember { mutableStateOf(false) }
 
             DoneList(
                 modifier = Modifier.padding(innerPadding),
                 housework = todayUiState.housework,
                 total = total,
+                currentDate = todayUiState.selectedDate,
                 onPlusButtonClick = {
                     openHouseworkListDialog.value = true
                     viewModel.onPlusButtonClicked()
                 },
-                onDeleteButtonClick = viewModel::onDeleteClicked
+                onDeleteButtonClick = viewModel::onDeleteClicked,
+                onCalendarButtonClick = { showModal.value = true }
             )
+
+            if (showModal.value) {
+                DatePickerModal(
+                    onDateSelected = viewModel::onChangeDate,
+                    onDismiss = {
+                        showModal.value = false
+                    }
+                )
+            }
 
             if (openHouseworkListDialog.value) {
                 Dialog(
@@ -89,16 +105,39 @@ fun TodayScreen(
 fun DoneList(
     housework: List<HouseworkViewData>,
     total: Int,
+    currentDate: String,
     onPlusButtonClick: () -> Unit,
     onDeleteButtonClick: (HouseworkViewData) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCalendarButtonClick: () -> Unit
 ) {
-
-
     Column(
         modifier = modifier.padding(horizontal = 16.dp)
     ) {
         Row {
+            Text(
+                text = "Выберите дату:"
+            )
+            OutlinedTextField(
+                value = currentDate,
+                onValueChange = { },
+                label = { Text("DOB") },
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { onCalendarButtonClick() }) {
+                        Icon(
+                            imageVector = Icons.Default.DateRange,
+                            contentDescription = "Select date"
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp)
+            )
+        }
+        Row {
+
             Text(
                 text = "Выполнено:",
                 modifier = Modifier.weight(4f)

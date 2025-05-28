@@ -9,5 +9,5 @@ interface RatingRepository {
 
     suspend fun addForDate(rating: Rating)
 
-    suspend fun updateTotalSum(rating: Rating)
+    suspend fun addOrUpdateForDate(rating: Rating)
 }

@@ -1,5 +1,6 @@
 package com.example.livingtogether.ui.today
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -21,8 +22,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Date
-import java.util.Locale
 
 class TodayViewModel(
     private val authRepository: AuthRepository,
@@ -35,11 +37,10 @@ class TodayViewModel(
         private set
 
     private val _uiState: MutableStateFlow<TodayUiState> =
-        MutableStateFlow(TodayUiState())
+        MutableStateFlow(TodayUiState( selectedDate = convertLocalToDate(LocalDate.now())))
     val uiState: StateFlow<TodayUiState> = _uiState.asStateFlow()
 
     private var currentUserId by mutableStateOf(authRepository.currentUser!!.uid)
-    private var currentDate by mutableStateOf(Date(convertMillisToDate(System.currentTimeMillis())))
 
     init {
         initializeUiState()
@@ -49,6 +50,22 @@ class TodayViewModel(
                     total = todayState.housework.sumOf {
                         houseworkRepository.getHouseworkItem(it.houseworkId)!!.cost
                     }
+                    ratingRepository.addOrUpdateForDate(
+                        Rating(
+                            userId = currentUserId,
+                            date = Date(uiState.value.selectedDate),
+                            total = total
+                        )
+                    )
+                } else {
+                    total = 0
+                    ratingRepository.addOrUpdateForDate(
+                        Rating(
+                            userId = currentUserId,
+                            date = Date(uiState.value.selectedDate),
+                            total = total
+                        )
+                    )
                 }
             }
         }
@@ -57,7 +74,7 @@ class TodayViewModel(
 
     private fun initializeUiState() {
         viewModelScope.launch {
-            usersHouseworkRepository.getUsersHouseworkListFlow(currentUserId, currentDate)
+            usersHouseworkRepository.getUsersHouseworkListFlow(currentUserId, Date(uiState.value.selectedDate))
                 .collect { usersHousework ->
                     _uiState.value = _uiState.value.copy(housework = usersHousework.map {
                         HouseworkViewData(
@@ -82,6 +99,13 @@ class TodayViewModel(
         }
     }
 
+    fun onChangeDate(date: Long?) {
+        _uiState.value = _uiState.value.copy(
+            selectedDate = convertMillisToString(date)
+        )
+        initializeUiState()
+    }
+
     fun onPlusButtonClicked() {
         updateUiState()
     }
@@ -92,16 +116,10 @@ class TodayViewModel(
                 UsersHousework(
                     userId = currentUserId,
                     houseworkId = housework.id,
-                    date = currentDate
+                    date = Date(uiState.value.selectedDate)
                 )
             )
-            ratingRepository.addForDate(
-                Rating(
-                    userId = currentUserId,
-                    date = currentDate,
-                    total = housework.cost.toInt()
-                )
-            )
+
         }
     }
 
@@ -111,8 +129,14 @@ class TodayViewModel(
         }
     }
 
-    private fun convertMillisToDate(millis: Long): String {
-        val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+    private fun convertLocalToDate(date: LocalDate): String {
+        val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+        return date.format(formatter)
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun convertMillisToString(millis: Long?): String {
+        val formatter = SimpleDateFormat("MM/dd/yyyy")
         return formatter.format(millis)
     }
 }

@@ -23,8 +23,8 @@ class RatingRemoteDataSource(private val firestore: FirebaseFirestore) {
         firestore.collection(RATING_COLLECTION).add(rating).await()
     }
 
-    suspend fun updateTotalSum(rating: Rating) {
-        firestore.collection(RATING_COLLECTION).document(rating.id)
+    suspend fun addOrUpdateForDate(rating: Rating) {
+        firestore.collection(RATING_COLLECTION).document(rating.userId + rating.date)
             .set(rating).await()
     }
 
