@@ -1,5 +1,6 @@
 package com.example.livingtogether.ui.rating
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.livingtogether.data.repository.AuthRepository
@@ -12,9 +13,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjuster
 import java.time.temporal.TemporalAdjusters
 import java.util.Date
@@ -62,17 +65,18 @@ class RatingViewModel(
         }
     }
 
-    fun changeDate(start: Date, end: Date) {
+    fun changeDate(start: Long, end: Long) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
-                startDate = start,
-                endDate = end
+                startDate = convertToDate(start),
+                endDate = convertToDate(end)
             )
             initializeUiState(userRepository.getUser(authRepository.currentUser!!.uid)!!.family)
         }
     }
 
     private fun getDate(dayOfWeek: TemporalAdjuster): Date {
+        val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
         return Date(
             LocalDate
                 .now(ZoneId.systemDefault())
@@ -80,8 +84,13 @@ class RatingViewModel(
                     dayOfWeek
                 )
                 .atStartOfDay(ZoneId.systemDefault())
-                .toInstant()
-                .toEpochMilli()
+                .format(formatter)
         )
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun convertToDate(millis: Long): Date {
+        val formatter = SimpleDateFormat("MM/dd/yyyy")
+        return Date(formatter.format(millis))
     }
 }

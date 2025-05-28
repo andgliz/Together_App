@@ -96,7 +96,7 @@ fun RatingScreen(
                 if (showModal) {
                     DateRangePickerModal(
                         onDateRangeSelected = {
-                            viewModel.changeDate(Date(it.first), Date(it.second))
+                            viewModel.changeDate(it.first, it.second)
                         },
                         onDismiss = { showModal = false }
                     )
