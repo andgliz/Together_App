@@ -39,7 +39,7 @@ fun Dialog(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(282.dp)
+                .height(280.dp)
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
         ) {

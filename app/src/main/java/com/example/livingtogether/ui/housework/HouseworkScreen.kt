@@ -67,7 +67,7 @@ fun HouseworkScreen(
                     housework = uiState.houseworkList,
                     onDropButtonClick = viewModel::onDeleteHouseworkClicked,
                     onClickAddButton = { openAddDialog.value = true },
-                    onClickButton = {
+                    onClickHousework = {
                         viewModel.updateUiState(it)
                         openUpdateDialog.value = true
                     }
@@ -118,7 +118,7 @@ fun HouseworkScreen(
 fun HouseworkList(
     housework: List<HouseworkViewData>,
     onDropButtonClick: (HouseworkViewData) -> Unit,
-    onClickButton: (HouseworkViewData) -> Unit,
+    onClickHousework: (HouseworkViewData) -> Unit,
     onClickAddButton: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -127,7 +127,7 @@ fun HouseworkList(
             Row {
                 TextButton(
                     onClick = {
-                        onClickButton(housework)
+                        onClickHousework(housework)
 
                     },
                     modifier = Modifier.weight(3f)

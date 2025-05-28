@@ -14,7 +14,6 @@ class HouseworkRemoteDataSource(private val firestore: FirebaseFirestore) {
                 .collection(HOUSEWORK_COLLECTION)
                 .whereEqualTo(FAMILY_ID, currentUsersFamily)
                 .dataObjects()
-
     }
 
     suspend fun getHouseworkItem(houseworkId: String): Housework? {
