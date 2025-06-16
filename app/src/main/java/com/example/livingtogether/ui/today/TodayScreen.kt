@@ -73,7 +73,7 @@ fun TodayScreen(
 
             DoneList(
                 modifier = Modifier.padding(innerPadding),
-                housework = todayUiState.housework,
+                housework = todayUiState.userHouseworkList,
                 total = total,
                 currentDate = todayUiState.selectedDate,
                 onPlusButtonClick = {

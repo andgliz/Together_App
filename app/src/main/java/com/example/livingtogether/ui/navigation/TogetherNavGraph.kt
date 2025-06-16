@@ -31,7 +31,7 @@ import com.example.livingtogether.ui.rating.RatingDestination
 import com.example.livingtogether.ui.rating.RatingScreen
 import com.example.livingtogether.ui.today.TodayDestination
 import com.example.livingtogether.ui.today.TodayScreen
-import kotlin.reflect.KFunction0
+import com.example.ui.theme.AppTypography
 
 @Composable
 fun TogetherNavGraph(
@@ -125,7 +125,8 @@ fun NavigationBar(
                     )
                 },
                 label = {
-                    Text(text = stringResource(item.navigation.titleRes))
+                    Text(text = stringResource(item.navigation.titleRes),
+                        style = AppTypography.titleSmall)
                 },
                 alwaysShowLabel = false,
             )

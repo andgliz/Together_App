@@ -2,4 +2,5 @@
 <resources>
 
     <style name="Theme.Together" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="IconButtonTheme" parent="android:Widget.Material.ActionBar"/>
 </resources>
