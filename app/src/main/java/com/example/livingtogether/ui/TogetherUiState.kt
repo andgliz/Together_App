@@ -13,7 +13,7 @@ import com.example.livingtogether.ui.today.TodayDestination
 import java.util.Date
 
 data class TodayUiState(
-    val housework: List<HouseworkViewData> = listOf(),
+    val userHouseworkList: List<HouseworkViewData> = listOf(),
     val houseworkList: List<HouseworkViewData> = listOf(),
     val selectedDate: String = ""
 )
@@ -27,6 +27,7 @@ data class HouseworkUiState(
 data class UserToRatingData(
     val userName: String,
     val totalRating: Int,
+    val ratingPlace: Int = 0,
 )
 
 data class RatingUiState(

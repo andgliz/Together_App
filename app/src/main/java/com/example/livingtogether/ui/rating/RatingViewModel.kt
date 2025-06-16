@@ -49,19 +49,25 @@ class RatingViewModel(
             val usersList = userRepository
                 .getAllFromFamily(currentUsersFamily = userFamilyId)
                 .map { it.toUserViewData() }
+            val usersToRating = usersList.map { user ->
+                UserToRatingData(
+                    userName = user.name,
+                    totalRating = ratingRepository.getForUserWithDateRange(
+                        user.id,
+                        uiState.value.startDate,
+                        uiState.value.endDate
+                    ).sumOf { it.total }
+                )
+            }.sortedByDescending { it.totalRating }
+            var rating = 0
             _uiState.value = _uiState.value.copy(
-                userToRatings = usersList.map { user ->
-                    UserToRatingData(
-                        userName = user.name,
-                        totalRating = ratingRepository.getForUserWithDateRange(
-                            user.id,
-                            uiState.value.startDate,
-                            uiState.value.endDate
-                        ).sumOf { it.total }
+                userToRatings = usersToRating.map { user ->
+                    rating++
+                    user.copy(
+                        ratingPlace = rating
                     )
                 }
             )
-
         }
     }
 
