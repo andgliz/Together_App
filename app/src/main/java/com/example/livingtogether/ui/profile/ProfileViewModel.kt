@@ -2,8 +2,6 @@ package com.example.livingtogether.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.livingtogether.data.repository.AuthRepository
-import com.example.livingtogether.data.repository.UserRepository
 import com.example.livingtogether.domain.repository.AuthRepository
 import com.example.livingtogether.domain.repository.UserRepository
 import com.example.livingtogether.ui.ProfileUiState

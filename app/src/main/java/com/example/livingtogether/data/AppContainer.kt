@@ -13,12 +13,6 @@ import com.example.livingtogether.data.offlinerepository.OfflineHouseworkReposit
 import com.example.livingtogether.data.offlinerepository.OfflineRatingRepository
 import com.example.livingtogether.data.offlinerepository.OfflineUserRepository
 import com.example.livingtogether.data.offlinerepository.OfflineUsersHouseworkRepository
-import com.example.livingtogether.data.repository.AuthRepository
-import com.example.livingtogether.data.repository.FamilyRepository
-import com.example.livingtogether.data.repository.HouseworkRepository
-import com.example.livingtogether.data.repository.RatingRepository
-import com.example.livingtogether.data.repository.UserRepository
-import com.example.livingtogether.data.repository.UsersHouseworkRepository
 import com.example.livingtogether.domain.repository.AuthRepository
 import com.example.livingtogether.domain.repository.FamilyRepository
 import com.example.livingtogether.domain.repository.HouseworkRepository
