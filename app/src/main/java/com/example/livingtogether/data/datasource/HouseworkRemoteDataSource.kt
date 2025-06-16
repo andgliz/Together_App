@@ -9,11 +9,20 @@ import kotlinx.coroutines.tasks.await
 
 class HouseworkRemoteDataSource(private val firestore: FirebaseFirestore) {
 
-    fun getHouseworkListFlow(currentUsersFamily: String) : Flow<List<Housework>> {
+    fun getHouseworkListFlow(currentUsersFamily: String): Flow<List<Housework>> {
         return firestore
-                .collection(HOUSEWORK_COLLECTION)
-                .whereEqualTo(FAMILY_ID, currentUsersFamily)
-                .dataObjects()
+            .collection(HOUSEWORK_COLLECTION)
+            .whereEqualTo(FAMILY_ID, currentUsersFamily)
+            .dataObjects()
+    }
+
+    suspend fun getHouseworkList(currentUsersFamily: String): List<Housework> {
+        return firestore
+            .collection(HOUSEWORK_COLLECTION)
+            .whereEqualTo(FAMILY_ID, currentUsersFamily)
+            .get()
+            .await()
+            .map { it.toObject() }
     }
 
     suspend fun getHouseworkItem(houseworkId: String): Housework? {

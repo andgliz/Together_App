@@ -15,6 +15,10 @@ class OfflineHouseworkRepository(
         return houseworkRemoteDataSource.getHouseworkListFlow(currentUsersFamily)
     }
 
+    override suspend fun getHouseworkList(currentUsersFamily: String): List<Housework> {
+        return houseworkRemoteDataSource.getHouseworkList(currentUsersFamily)
+    }
+
     override suspend fun getHouseworkItem(houseworkId: String): Housework? {
         return houseworkRemoteDataSource.getHouseworkItem(houseworkId)
     }
