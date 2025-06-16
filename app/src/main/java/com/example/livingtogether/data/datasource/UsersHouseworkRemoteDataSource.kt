@@ -29,11 +29,6 @@ class UsersHouseworkRemoteDataSource(private val firestore: FirebaseFirestore) {
         firestore.collection(USERS_HOUSEWORK_COLLECTION).add(usersHousework).await().id
     }
 
-    suspend fun updateUsersHousework(usersHousework: UsersHousework) {
-        firestore.collection(USERS_HOUSEWORK_COLLECTION).document(usersHousework.id)
-            .set(usersHousework).await()
-    }
-
     suspend fun deleteUsersHousework(usersHouseworkId: String) {
         firestore.collection(USERS_HOUSEWORK_COLLECTION).document(usersHouseworkId).delete().await()
     }

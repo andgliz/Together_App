@@ -23,10 +23,6 @@ class OfflineUsersHouseworkRepository(private val usersHouseworkRemoteDataSource
         usersHouseworkRemoteDataSource.createUsersHousework(usersHousework)
     }
 
-    override suspend fun updateUsersHousework(usersHousework: UsersHousework) {
-        usersHouseworkRemoteDataSource.updateUsersHousework(usersHousework)
-    }
-
     override suspend fun deleteUsersHousework(usersHouseworkId: String) {
         usersHouseworkRemoteDataSource.deleteUsersHousework(usersHouseworkId)
     }
