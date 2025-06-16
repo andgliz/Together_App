@@ -1,15 +1,19 @@
 package com.example.livingtogether.ui.housework
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -21,9 +25,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.livingtogether.R
 import com.example.livingtogether.ui.AppViewModelProvider
@@ -61,54 +67,72 @@ fun HouseworkScreen(
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .padding(horizontal = 8.dp)
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.Top,
             ) {
+                Row(
+                    modifier = Modifier,
+                ) {
+                    Text(
+                        text = "Name of housework",
+                        modifier = Modifier.weight(3.5f)
+                    )
+                    Text(
+                        text = "Cost",
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                }
                 HouseworkList(
                     housework = uiState.houseworkList,
                     onDropButtonClick = viewModel::onDeleteHouseworkClicked,
-                    onClickAddButton = { openAddDialog.value = true },
                     onClickHousework = {
                         viewModel.updateUiState(it)
                         openUpdateDialog.value = true
-                    }
+                    },
+                    modifier = Modifier.height(624.dp)
                 )
+                AddButton(
+                    onClickAddButton = { openAddDialog.value = true },
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .padding(top = 8.dp)
+                )
+            }
+            if (openAddDialog.value) {
+                Dialog(
+                    onValueChanged = viewModel::updateUiState,
+                    onConfirmation = {
+                        viewModel.onAddHouseworkClicked()
+                        openAddDialog.value = false
+                    },
+                    onDismissRequest = {
+                        openAddDialog.value = false
+                        viewModel.updateUiState(HouseworkViewData())
+                    },
+                    houseworkInput = uiState.houseworkInput,
+                    enabled = uiState.isEnabled,
+                    dialogTitle = stringResource(R.string.add_title),
+                    buttonText = stringResource(R.string.add)
+                )
+            }
 
-                if (openAddDialog.value) {
-                    Dialog(
-                        onValueChanged = viewModel::updateUiState,
-                        onConfirmation = {
-                            viewModel.onAddHouseworkClicked()
-                            openAddDialog.value = false
-                        },
-                        onDismissRequest = {
-                            openAddDialog.value = false
-                            viewModel.updateUiState(HouseworkViewData())
-                        },
-                        houseworkInput = uiState.houseworkInput,
-                        enabled = uiState.isEnabled,
-                        dialogTitle = stringResource(R.string.add_title),
-                        buttonText = stringResource(R.string.add)
-                    )
-                }
-
-                if (openUpdateDialog.value) {
-                    Dialog(
-                        onValueChanged = viewModel::updateUiState,
-                        onConfirmation = {
-                            viewModel.onHouseworkClicked()
-                            openUpdateDialog.value = false
-                        },
-                        onDismissRequest = {
-                            openUpdateDialog.value = false
-                            viewModel.updateUiState(HouseworkViewData())
-                        },
-                        houseworkInput = uiState.houseworkInput,
-                        enabled = uiState.isEnabled,
-                        dialogTitle = stringResource(R.string.update_title),
-                        buttonText = stringResource(R.string.update)
-                    )
-                }
-
+            if (openUpdateDialog.value) {
+                Dialog(
+                    onValueChanged = viewModel::updateUiState,
+                    onConfirmation = {
+                        viewModel.onHouseworkClicked()
+                        openUpdateDialog.value = false
+                    },
+                    onDismissRequest = {
+                        openUpdateDialog.value = false
+                        viewModel.updateUiState(HouseworkViewData())
+                    },
+                    houseworkInput = uiState.houseworkInput,
+                    enabled = uiState.isEnabled,
+                    dialogTitle = stringResource(R.string.update_title),
+                    buttonText = stringResource(R.string.update)
+                )
             }
         }
     }
@@ -119,32 +143,34 @@ fun HouseworkList(
     housework: List<HouseworkViewData>,
     onDropButtonClick: (HouseworkViewData) -> Unit,
     onClickHousework: (HouseworkViewData) -> Unit,
-    onClickAddButton: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn() {
+    LazyColumn(
+        modifier = modifier
+    ) {
         items(housework) { housework ->
-            Row {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 TextButton(
-                    onClick = {
-                        onClickHousework(housework)
-
-                    },
-                    modifier = Modifier.weight(3f)
+                    onClick = { onClickHousework(housework) },
+                    modifier = Modifier.weight(4.5f)
                 ) {
                     Text(
                         text = housework.name,
-                        modifier = Modifier.weight(3f)
+                        modifier = Modifier.weight(3.5f),
+                        fontSize = 16.sp
                     )
                     Text(
                         text = housework.cost,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        fontSize = 16.sp,
                     )
                 }
 
                 IconButton(
                     onClick = { onDropButtonClick(housework) },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(0.5f)
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
@@ -152,12 +178,8 @@ fun HouseworkList(
                     )
                 }
             }
-
         }
     }
-    AddButton(
-        onClickAddButton = onClickAddButton
-    )
 }
 
 @Composable
@@ -165,13 +187,13 @@ fun AddButton(
     modifier: Modifier = Modifier,
     onClickAddButton: () -> Unit
 ) {
-    Row() {
-        IconButton(
+    Row(modifier = modifier) {
+        FloatingActionButton(
             onClick = onClickAddButton
         ) {
             Icon(
                 imageVector = Icons.Filled.Add,
-                contentDescription = null
+                contentDescription = "Добавить"
             )
         }
     }

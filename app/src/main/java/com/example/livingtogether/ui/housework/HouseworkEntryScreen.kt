@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.livingtogether.R
 import com.example.livingtogether.ui.HouseworkViewData
@@ -39,43 +40,50 @@ fun Dialog(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(280.dp)
-                .padding(16.dp),
+                .height(280.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 16.dp, bottom = 8.dp)
+                    .weight(5f),
+                verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = dialogTitle
+                    text = dialogTitle,
+                    modifier = Modifier.weight(1f)
                 )
                 HouseworkEntryOrEdit(
                     onValueChanged = onValueChanged,
-                    houseworkInput = houseworkInput
+                    houseworkInput = houseworkInput,
+                    modifier = Modifier.weight(3f)
                 )
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
+                        .fillMaxWidth()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.SpaceAround,
                 ) {
                     TextButton(
                         onClick = { onDismissRequest() },
-                        modifier = Modifier.padding(8.dp),
+                        modifier = Modifier,
                     ) {
                         Text(
-                            text = stringResource(R.string.cancel)
+                            text = stringResource(R.string.cancel),
+                            fontSize = 16.sp
                         )
                     }
                     TextButton(
                         onClick = { onConfirmation() },
                         enabled = enabled,
-                        modifier = Modifier.padding(8.dp),
+                        modifier = Modifier,
                     ) {
                         Text(
-                            text = buttonText
+                            text = buttonText,
+                            fontSize = 16.sp
                         )
                     }
                 }
@@ -87,38 +95,40 @@ fun Dialog(
 @Composable
 fun HouseworkEntryOrEdit(
     onValueChanged: (HouseworkViewData) -> Unit,
-    houseworkInput: HouseworkViewData
-
+    houseworkInput: HouseworkViewData,
+    modifier: Modifier = Modifier,
 ) {
-    OutlinedTextField(
-        value = houseworkInput.name,
-        onValueChange = { onValueChanged(houseworkInput.copy(name = it)) },
-        label = { Text(stringResource(R.string.housework)) },
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
-        singleLine = true
-    )
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        OutlinedTextField(
+            value = houseworkInput.name,
+            onValueChange = { onValueChanged(houseworkInput.copy(name = it)) },
+            label = { Text(stringResource(R.string.housework)) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            modifier = Modifier
+                .fillMaxWidth(),
+            singleLine = true
+        )
 
-    OutlinedTextField(
-        value = houseworkInput.cost,
-        onValueChange = { onValueChanged(houseworkInput.copy(cost = it)) },
-        label = { Text(stringResource(R.string.cost)) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
-        singleLine = true
-    )
+        OutlinedTextField(
+            value = houseworkInput.cost,
+            onValueChange = { onValueChanged(houseworkInput.copy(cost = it)) },
+            label = { Text(stringResource(R.string.cost)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            modifier = Modifier
+                .fillMaxWidth(),
+            singleLine = true
+        )
+    }
 }
-
