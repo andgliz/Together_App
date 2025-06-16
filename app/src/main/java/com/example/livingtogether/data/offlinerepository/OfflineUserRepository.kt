@@ -2,7 +2,7 @@ package com.example.livingtogether.data.offlinerepository
 
 import com.example.livingtogether.data.datasource.UserRemoteDataSource
 import com.example.livingtogether.data.model.User
-import com.example.livingtogether.data.repository.UserRepository
+import com.example.livingtogether.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 
 class OfflineUserRepository(private val userRemoteDataSource: UserRemoteDataSource) :

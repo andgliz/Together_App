@@ -2,9 +2,9 @@ package com.example.livingtogether.ui.housework
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.livingtogether.data.repository.AuthRepository
-import com.example.livingtogether.data.repository.HouseworkRepository
-import com.example.livingtogether.data.repository.UserRepository
+import com.example.livingtogether.domain.repository.AuthRepository
+import com.example.livingtogether.domain.repository.HouseworkRepository
+import com.example.livingtogether.domain.repository.UserRepository
 import com.example.livingtogether.ui.HouseworkUiState
 import com.example.livingtogether.ui.HouseworkViewData
 import com.example.livingtogether.ui.toHousework

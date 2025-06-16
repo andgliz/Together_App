@@ -19,6 +19,12 @@ import com.example.livingtogether.data.repository.HouseworkRepository
 import com.example.livingtogether.data.repository.RatingRepository
 import com.example.livingtogether.data.repository.UserRepository
 import com.example.livingtogether.data.repository.UsersHouseworkRepository
+import com.example.livingtogether.domain.repository.AuthRepository
+import com.example.livingtogether.domain.repository.FamilyRepository
+import com.example.livingtogether.domain.repository.HouseworkRepository
+import com.example.livingtogether.domain.repository.RatingRepository
+import com.example.livingtogether.domain.repository.UserRepository
+import com.example.livingtogether.domain.repository.UsersHouseworkRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 

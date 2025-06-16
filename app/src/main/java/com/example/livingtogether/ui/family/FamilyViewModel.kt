@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.livingtogether.data.model.Family
 import com.example.livingtogether.data.model.User
-import com.example.livingtogether.data.repository.AuthRepository
-import com.example.livingtogether.data.repository.FamilyRepository
-import com.example.livingtogether.data.repository.UserRepository
+import com.example.livingtogether.domain.repository.AuthRepository
+import com.example.livingtogether.domain.repository.FamilyRepository
+import com.example.livingtogether.domain.repository.UserRepository
 import com.example.livingtogether.ui.FamilyUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

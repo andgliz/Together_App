@@ -1,4 +1,4 @@
-package com.example.livingtogether.data.repository
+package com.example.livingtogether.domain.repository
 
 import com.example.livingtogether.data.model.User
 import kotlinx.coroutines.flow.Flow

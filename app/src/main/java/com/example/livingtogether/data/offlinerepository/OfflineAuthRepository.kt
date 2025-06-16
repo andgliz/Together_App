@@ -1,7 +1,7 @@
 package com.example.livingtogether.data.offlinerepository
 
 import com.example.livingtogether.data.datasource.AuthRemoteDataSource
-import com.example.livingtogether.data.repository.AuthRepository
+import com.example.livingtogether.domain.repository.AuthRepository
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
 

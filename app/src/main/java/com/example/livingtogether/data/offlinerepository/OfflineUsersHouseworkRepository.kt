@@ -2,7 +2,7 @@ package com.example.livingtogether.data.offlinerepository
 
 import com.example.livingtogether.data.datasource.UsersHouseworkRemoteDataSource
 import com.example.livingtogether.data.model.UsersHousework
-import com.example.livingtogether.data.repository.UsersHouseworkRepository
+import com.example.livingtogether.domain.repository.UsersHouseworkRepository
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 

@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.livingtogether.data.repository.AuthRepository
-import com.example.livingtogether.data.repository.UserRepository
+import com.example.livingtogether.domain.repository.AuthRepository
+import com.example.livingtogether.domain.repository.UserRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 

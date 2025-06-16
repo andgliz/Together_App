@@ -1,4 +1,4 @@
-package com.example.livingtogether.data.repository
+package com.example.livingtogether.domain.repository
 
 import com.example.livingtogether.data.model.UsersHousework
 import kotlinx.coroutines.flow.Flow
@@ -10,8 +10,6 @@ interface UsersHouseworkRepository {
     suspend fun getUsersHouseworkItem(usersHouseworkId: String): UsersHousework?
 
     suspend fun createUsersHousework(usersHousework: UsersHousework)
-
-    suspend fun updateUsersHousework(usersHousework: UsersHousework)
 
     suspend fun deleteUsersHousework(usersHouseworkId: String)
 }

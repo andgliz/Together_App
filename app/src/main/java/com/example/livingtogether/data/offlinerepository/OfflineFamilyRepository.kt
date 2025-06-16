@@ -2,7 +2,7 @@ package com.example.livingtogether.data.offlinerepository
 
 import com.example.livingtogether.data.datasource.FamilyRemoteDataSource
 import com.example.livingtogether.data.model.Family
-import com.example.livingtogether.data.repository.FamilyRepository
+import com.example.livingtogether.domain.repository.FamilyRepository
 
 class OfflineFamilyRepository(private val familyRemoteDataSource: FamilyRemoteDataSource) :
     FamilyRepository {

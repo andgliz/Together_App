@@ -2,7 +2,7 @@ package com.example.livingtogether.data.offlinerepository
 
 import com.example.livingtogether.data.datasource.RatingRemoteDataSource
 import com.example.livingtogether.data.model.Rating
-import com.example.livingtogether.data.repository.RatingRepository
+import com.example.livingtogether.domain.repository.RatingRepository
 import java.util.Date
 
 class OfflineRatingRepository(private val ratingRemoteDataSource: RatingRemoteDataSource) :

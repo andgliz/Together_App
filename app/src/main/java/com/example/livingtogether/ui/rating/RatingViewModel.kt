@@ -3,9 +3,9 @@ package com.example.livingtogether.ui.rating
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.livingtogether.data.repository.AuthRepository
-import com.example.livingtogether.data.repository.RatingRepository
-import com.example.livingtogether.data.repository.UserRepository
+import com.example.livingtogether.domain.repository.AuthRepository
+import com.example.livingtogether.domain.repository.RatingRepository
+import com.example.livingtogether.domain.repository.UserRepository
 import com.example.livingtogether.ui.RatingUiState
 import com.example.livingtogether.ui.UserToRatingData
 import com.example.livingtogether.ui.toUserViewData

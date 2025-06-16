@@ -3,7 +3,7 @@ package com.example.livingtogether.data.offlinerepository
 import com.example.livingtogether.data.datasource.HouseworkRemoteDataSource
 import com.example.livingtogether.data.datasource.UsersHouseworkRemoteDataSource
 import com.example.livingtogether.data.model.Housework
-import com.example.livingtogether.data.repository.HouseworkRepository
+import com.example.livingtogether.domain.repository.HouseworkRepository
 import kotlinx.coroutines.flow.Flow
 
 class OfflineHouseworkRepository(
