@@ -1,8 +1,10 @@
 package com.example.livingtogether.ui.today
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +15,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -24,9 +29,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.livingtogether.R
 import com.example.livingtogether.ui.AppViewModelProvider
@@ -112,83 +122,111 @@ fun DoneList(
     onCalendarButtonClick: () -> Unit
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 16.dp)
+        modifier = modifier.padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row {
-            Text(
-                text = "Выберите дату:"
-            )
-            OutlinedTextField(
-                value = currentDate,
-                onValueChange = { },
-                label = { Text("DOB") },
-                readOnly = true,
-                trailingIcon = {
-                    IconButton(onClick = { onCalendarButtonClick() }) {
-                        Icon(
-                            imageVector = Icons.Default.DateRange,
-                            contentDescription = "Select date"
-                        )
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp)
-            )
-        }
-        Row {
+        OutlinedTextField(
+            value = currentDate,
+            onValueChange = { },
+            label = { Text("Choose date") },
+            readOnly = true,
+            trailingIcon = {
+                IconButton(onClick = { onCalendarButtonClick() }) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = "Select date"
+                    )
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp)
+        )
 
+        Row(
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
-                text = "Выполнено:",
-                modifier = Modifier.weight(4f)
+                text = "Done:",
             )
-            IconButton(
-                onClick = { onPlusButtonClick() },
-                modifier = Modifier.weight(1f)
+            FloatingActionButton(
+                onClick = { onPlusButtonClick() }
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
-                    contentDescription = null
+                    contentDescription = "Add"
                 )
             }
         }
 
         LazyColumn(
             modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 24.dp)
+                .padding(top = 8.dp)
         ) {
             items(housework) { housework ->
                 Row {
                     Text(
                         text = housework.name,
-                        modifier = Modifier.weight(2f)
+                        modifier = Modifier
+                            .weight(3.5f)
+                            .align(Alignment.CenterVertically)
                     )
                     Text(
                         text = housework.cost,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier
+                            .weight(1f)
+                            .align(Alignment.CenterVertically)
                     )
-                    IconButton(
-                        onClick = { onDeleteButtonClick(housework) },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Delete,
-                            contentDescription = null
+                    Card(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .align(Alignment.CenterVertically),
+                        colors = CardColors(
+                            containerColor = Color.Unspecified,
+                            contentColor = Color.Unspecified,
+                            disabledContainerColor = Color.Unspecified,
+                            disabledContentColor = Color.Unspecified
                         )
+                    ) {
+                        IconButton(
+                            onClick = { onDeleteButtonClick(housework) },
+                            modifier = Modifier.align(Alignment.End)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = null
+                            )
+                        }
                     }
                 }
             }
-
         }
-        Row {
-            Text(
-                text = "Total:",
-                modifier = modifier.weight(4f)
-            )
-            Text(
-                text = total.toString(),
-                modifier = modifier.weight(1f)
-            )
-        }
+        Spacer(modifier = Modifier.weight(0.3f))
     }
-
+    Row(
+        modifier = Modifier
+            .padding(bottom = 128.dp)
+            .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.Bottom,
+    ) {
+        Text(
+            text = "Total:",
+            modifier = Modifier.weight(1f),
+            fontSize = 24.sp,
+            fontStyle = FontStyle.Italic
+        )
+        Text(
+            text = total.toString(),
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.End,
+            fontSize = 24.sp,
+            fontStyle = FontStyle.Italic
+        )
+    }
 }

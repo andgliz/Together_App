@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.livingtogether.R
 import com.example.livingtogether.ui.HouseworkViewData
@@ -34,23 +35,25 @@ fun Dialog(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(280.dp)
-                .padding(16.dp),
+                .height(280.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 16.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = dialogTitle,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(0.6f)
                 )
-                LazyColumn(modifier = Modifier.weight(3f)) {
+                LazyColumn(modifier = Modifier.weight(3.5f)) {
                     items(houseworkList) { housework ->
-                        Row() {
+                        Row(modifier = Modifier,
+                            verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = housework.name,
                                 modifier = Modifier.weight(3f)
@@ -61,10 +64,11 @@ fun Dialog(
                             )
                             TextButton(
                                 onClick = { onConfirmation(housework) },
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier
+                                    .weight(1f)
                             ) {
                                 Text(
-                                    text = buttonText
+                                    text = buttonText,
                                 )
                             }
                         }
@@ -73,11 +77,12 @@ fun Dialog(
                 TextButton(
                     onClick = { onDismissRequest() },
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(vertical = 4.dp)
                         .weight(1f),
                 ) {
                     Text(
-                        text = stringResource(R.string.cancel)
+                        text = stringResource(R.string.cancel),
+                        fontSize = 16.sp
                     )
                 }
             }
