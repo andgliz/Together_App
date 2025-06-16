@@ -19,6 +19,7 @@ import com.example.livingtogether.domain.repository.HouseworkRepository
 import com.example.livingtogether.domain.repository.RatingRepository
 import com.example.livingtogether.domain.repository.UserRepository
 import com.example.livingtogether.domain.repository.UsersHouseworkRepository
+import com.example.livingtogether.domain.usecase.GetUserHouseworkListUseCase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -29,6 +30,7 @@ interface AppContainer {
     val houseworkRepository: HouseworkRepository
     val usersHouseworkRepository: UsersHouseworkRepository
     val ratingRepository: RatingRepository
+    val getUserHouseworkListUseCase: GetUserHouseworkListUseCase
 }
 
 class AppDataContainer(private val context: Context) : AppContainer {
@@ -56,4 +58,6 @@ class AppDataContainer(private val context: Context) : AppContainer {
     override val ratingRepository: RatingRepository by lazy {
         OfflineRatingRepository(RatingRemoteDataSource(FirebaseFirestore.getInstance()))
     }
+
+    override val getUserHouseworkListUseCase: GetUserHouseworkListUseCase = GetUserHouseworkListUseCase(houseworkRepository)
 }

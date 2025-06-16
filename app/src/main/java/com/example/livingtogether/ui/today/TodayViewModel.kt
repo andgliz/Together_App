@@ -3,7 +3,6 @@ package com.example.livingtogether.ui.today
 import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,9 +17,13 @@ import com.example.livingtogether.domain.usecase.GetUserHouseworkListUseCase
 import com.example.livingtogether.ui.HouseworkViewData
 import com.example.livingtogether.ui.TodayUiState
 import com.example.livingtogether.ui.toHouseworkViewData
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -32,79 +35,66 @@ class TodayViewModel(
     private val usersHouseworkRepository: UsersHouseworkRepository,
     private val houseworkRepository: HouseworkRepository,
     private val userRepository: UserRepository,
-    private val ratingRepository: RatingRepository
+    private val ratingRepository: RatingRepository,
+    private val getUserHouseworkListUseCase: GetUserHouseworkListUseCase
 ) : ViewModel() {
     var total by mutableIntStateOf(0)
         private set
 
     private val _uiState: MutableStateFlow<TodayUiState> =
-        MutableStateFlow(TodayUiState( selectedDate = convertLocalToDate(LocalDate.now())))
+        MutableStateFlow(TodayUiState(selectedDate = convertLocalToDate(LocalDate.now())))
     val uiState: StateFlow<TodayUiState> = _uiState.asStateFlow()
 
-    private var currentUserId by mutableStateOf(authRepository.currentUser!!.uid)
+    private var currentUserId = authRepository.currentUser!!.uid
 
     init {
-        initializeUiState()
         viewModelScope.launch {
-            _uiState.collect { todayState ->
-                if (todayState.housework.isNotEmpty()) {
-                    total = todayState.housework.sumOf {
-                        houseworkRepository.getHouseworkItem(it.houseworkId)!!.cost
-                    }
-                    ratingRepository.addOrUpdateForDate(
-                        Rating(
-                            userId = currentUserId,
-                            date = Date(uiState.value.selectedDate),
-                            total = total
-                        )
-                    )
-                } else {
-                    total = 0
-                    ratingRepository.addOrUpdateForDate(
-                        Rating(
-                            userId = currentUserId,
-                            date = Date(uiState.value.selectedDate),
-                            total = total
-                        )
-                    )
-                }
-            }
+            uiState.flatMapLatest {
+                initializeUiState(it.selectedDate)
+            }.collect()
         }
-
     }
 
-    private fun initializeUiState() {
-        viewModelScope.launch {
-            usersHouseworkRepository.getUsersHouseworkListFlow(currentUserId, Date(uiState.value.selectedDate))
-                .collect { usersHousework ->
-                    _uiState.value = _uiState.value.copy(housework = usersHousework.map {
-                        HouseworkViewData(
-                            id = it.id,
-                            houseworkId = it.houseworkId,
-                            name = houseworkRepository.getHouseworkItem(it.houseworkId)!!.name,
-                            cost = houseworkRepository.getHouseworkItem(it.houseworkId)!!.cost.toString()
-                        )
-                    })
+    private fun initializeUiState(date: String): Flow<List<UsersHousework>> {
+        return usersHouseworkRepository.getUsersHouseworkListFlow(
+            currentUserId,
+            Date(date)
+        )
+            .onEach { userHouseworkList ->
+                val getUserHouseworkList = getUserHouseworkListUseCase(userHouseworkList)
+                _uiState.value = _uiState.value.copy(
+                    userHouseworkList = getUserHouseworkList.map { it.toHouseworkViewData() })
+                total = if (getUserHouseworkList.isNotEmpty()) {
+                    getUserHouseworkList.sumOf { it.cost }
+                } else {
+                    0
                 }
-        }
+                ratingRepository.addOrUpdateForDate(
+                    Rating(
+                        userId = currentUserId,
+                        date = Date(_uiState.value.selectedDate),
+                        total = total
+                    )
+                )
+            }
     }
 
     private fun updateUiState() {
         viewModelScope.launch {
-            houseworkRepository.getHouseworkListFlow(userRepository.getUser(currentUserId)!!.family)
-                .collect { housework ->
-                    _uiState.value = _uiState.value.copy(
-                        houseworkList = housework.map { it.toHouseworkViewData() }
-                    )
-                }
+            _uiState.value = _uiState.value.copy(
+                houseworkList = houseworkRepository.getHouseworkList(
+                    userRepository.getUser(
+                        currentUserId
+                    )!!.family
+                ).map { it.toHouseworkViewData() }
+            )
         }
     }
 
-    fun onChangeDate(date: Long?) {
+    fun onChangeDate(date: Long) {
         _uiState.value = _uiState.value.copy(
             selectedDate = convertMillisToString(date)
         )
-        initializeUiState()
     }
 
     fun onPlusButtonClicked() {
@@ -136,7 +126,7 @@ class TodayViewModel(
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun convertMillisToString(millis: Long?): String {
+    private fun convertMillisToString(millis: Long): String {
         val formatter = SimpleDateFormat("MM/dd/yyyy")
         return formatter.format(millis)
     }
