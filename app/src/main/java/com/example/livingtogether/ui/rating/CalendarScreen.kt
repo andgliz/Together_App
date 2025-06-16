@@ -12,6 +12,7 @@ import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +35,8 @@ fun DateRangePickerModal(
                         )
                     )
                     onDismiss()
-                }
+                },
+                enabled = dateRangePickerState.selectedEndDateMillis != null && dateRangePickerState.selectedStartDateMillis != null
             ) {
                 Text("OK")
             }
@@ -49,7 +51,8 @@ fun DateRangePickerModal(
             state = dateRangePickerState,
             title = {
                 Text(
-                    text = "Select date range"
+                    text = "Select date range",
+                    fontSize = 12.sp
                 )
             },
             showModeToggle = false,

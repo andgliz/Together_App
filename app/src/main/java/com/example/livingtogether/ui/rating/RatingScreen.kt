@@ -1,15 +1,13 @@
 package com.example.livingtogether.ui.rating
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -68,7 +66,10 @@ fun RatingScreen(
             val uiState by viewModel.uiState.collectAsState()
 
             Column(
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 OutlinedTextField(
                     value = convertMillisToDate(uiState.startDate.toString()) + " - " + convertMillisToDate(
@@ -101,12 +102,9 @@ fun RatingScreen(
                         onDismiss = { showModal = false }
                     )
                 }
-                Text(
-                    text = "Rating:"
-                )
-
                 RatingList(
-                    ratingList = uiState.userToRatings
+                    ratingList = uiState.userToRatings,
+                    modifier = Modifier.height(652.dp)
                 )
             }
         }
@@ -120,35 +118,15 @@ fun RatingList(
 ) {
     LazyColumn(
         modifier = modifier
-            .padding(horizontal = 80.dp, vertical = 8.dp)
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(vertical = 8.dp)
+            .fillMaxWidth()
     ) {
         items(ratingList) { user ->
-            UserItem(
+            RatingCard(
                 userToRatings = user,
                 modifier = modifier
             )
         }
-    }
-}
-
-@Composable
-fun UserItem(
-    userToRatings: UserToRatingData,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.padding(vertical = 2.dp)
-    ) {
-        Text(
-            text = userToRatings.userName,
-            modifier = Modifier.weight(1f)
-        )
-        Text(
-            text = userToRatings.totalRating.toString(),
-            modifier = Modifier.weight(1f)
-        )
     }
 }
 
