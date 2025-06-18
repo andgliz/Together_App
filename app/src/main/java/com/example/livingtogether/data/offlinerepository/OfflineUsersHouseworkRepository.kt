@@ -15,6 +15,14 @@ class OfflineUsersHouseworkRepository(private val usersHouseworkRemoteDataSource
         return usersHouseworkRemoteDataSource.getUsersHouseworkListFlow(currentUserId, date)
     }
 
+    override suspend fun getUserHouseworkList(
+        userId: String,
+        startDate: Date,
+        endDate: Date
+    ): List<String> {
+        return usersHouseworkRemoteDataSource.getUserHouseworkList(userId, startDate, endDate)
+    }
+
     override suspend fun getUsersHouseworkItem(usersHouseworkId: String): UsersHousework? {
         return usersHouseworkRemoteDataSource.getUsersHouseworkItem(usersHouseworkId)
     }

@@ -4,22 +4,20 @@ import android.content.Context
 import com.example.livingtogether.data.datasource.AuthRemoteDataSource
 import com.example.livingtogether.data.datasource.FamilyRemoteDataSource
 import com.example.livingtogether.data.datasource.HouseworkRemoteDataSource
-import com.example.livingtogether.data.datasource.RatingRemoteDataSource
 import com.example.livingtogether.data.datasource.UserRemoteDataSource
 import com.example.livingtogether.data.datasource.UsersHouseworkRemoteDataSource
 import com.example.livingtogether.data.offlinerepository.OfflineAuthRepository
 import com.example.livingtogether.data.offlinerepository.OfflineFamilyRepository
 import com.example.livingtogether.data.offlinerepository.OfflineHouseworkRepository
-import com.example.livingtogether.data.offlinerepository.OfflineRatingRepository
 import com.example.livingtogether.data.offlinerepository.OfflineUserRepository
 import com.example.livingtogether.data.offlinerepository.OfflineUsersHouseworkRepository
 import com.example.livingtogether.domain.repository.AuthRepository
 import com.example.livingtogether.domain.repository.FamilyRepository
 import com.example.livingtogether.domain.repository.HouseworkRepository
-import com.example.livingtogether.domain.repository.RatingRepository
 import com.example.livingtogether.domain.repository.UserRepository
 import com.example.livingtogether.domain.repository.UsersHouseworkRepository
 import com.example.livingtogether.domain.usecase.GetUserHouseworkListUseCase
+import com.example.livingtogether.domain.usecase.GetUserRatingUseCase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -29,8 +27,8 @@ interface AppContainer {
     val familyRepository: FamilyRepository
     val houseworkRepository: HouseworkRepository
     val usersHouseworkRepository: UsersHouseworkRepository
-    val ratingRepository: RatingRepository
     val getUserHouseworkListUseCase: GetUserHouseworkListUseCase
+    val getUserRatingUseCase: GetUserRatingUseCase
 }
 
 class AppDataContainer(private val context: Context) : AppContainer {
@@ -55,9 +53,7 @@ class AppDataContainer(private val context: Context) : AppContainer {
         OfflineUsersHouseworkRepository(UsersHouseworkRemoteDataSource(FirebaseFirestore.getInstance()))
     }
 
-    override val ratingRepository: RatingRepository by lazy {
-        OfflineRatingRepository(RatingRemoteDataSource(FirebaseFirestore.getInstance()))
-    }
-
     override val getUserHouseworkListUseCase: GetUserHouseworkListUseCase = GetUserHouseworkListUseCase(houseworkRepository)
+
+    override val getUserRatingUseCase: GetUserRatingUseCase = GetUserRatingUseCase(usersHouseworkRepository, houseworkRepository)
 }

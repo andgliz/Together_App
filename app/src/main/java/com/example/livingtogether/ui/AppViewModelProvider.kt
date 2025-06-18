@@ -20,7 +20,6 @@ object AppViewModelProvider {
                 (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.usersHouseworkRepository,
                 (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.houseworkRepository,
                 (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.userRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.ratingRepository,
                 (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.getUserHouseworkListUseCase,
             )
         }
@@ -35,7 +34,7 @@ object AppViewModelProvider {
             RatingViewModel(
                 (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository,
                 (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.userRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.ratingRepository,
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.getUserRatingUseCase,
             )
         }
         initializer {

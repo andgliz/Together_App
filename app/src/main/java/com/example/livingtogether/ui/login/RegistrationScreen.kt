@@ -63,7 +63,7 @@ fun RegistrationScreen(
             ) {
                 TextField(
                     value = uiState.nameState,
-                    label = { Text("Create a name") },
+                    label = { Text("Enter your name") },
                     onValueChange = viewModel::onNameChange,
                 )
                 Spacer(

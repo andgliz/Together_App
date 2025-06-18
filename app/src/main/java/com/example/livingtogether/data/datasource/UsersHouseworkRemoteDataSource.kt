@@ -19,6 +19,17 @@ class UsersHouseworkRemoteDataSource(private val firestore: FirebaseFirestore) {
             .dataObjects()
     }
 
+    suspend fun getUserHouseworkList(userId: String, startDate: Date, endDate: Date): List<String> {
+        return firestore
+            .collection(USERS_HOUSEWORK_COLLECTION)
+            .whereEqualTo(USER_ID, userId)
+            .whereGreaterThanOrEqualTo(DATE, startDate)
+            .whereLessThanOrEqualTo(DATE, endDate)
+            .get()
+            .await()
+            .map { it.toObject<UsersHousework>().houseworkId }
+    }
+
     suspend fun getUsersHouseworkItem(usersHouseworkId: String): UsersHousework? {
         return firestore.collection(USERS_HOUSEWORK_COLLECTION).document(usersHouseworkId).get()
             .await()

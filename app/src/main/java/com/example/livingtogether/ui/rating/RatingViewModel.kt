@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.livingtogether.domain.repository.AuthRepository
-import com.example.livingtogether.domain.repository.RatingRepository
 import com.example.livingtogether.domain.repository.UserRepository
+import com.example.livingtogether.domain.usecase.GetUserRatingUseCase
 import com.example.livingtogether.ui.RatingUiState
 import com.example.livingtogether.ui.UserToRatingData
 import com.example.livingtogether.ui.toUserViewData
@@ -25,7 +25,7 @@ import java.util.Date
 class RatingViewModel(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
-    private val ratingRepository: RatingRepository
+    private val getUserRatingUseCase: GetUserRatingUseCase,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<RatingUiState> = MutableStateFlow(
@@ -52,19 +52,18 @@ class RatingViewModel(
             val usersToRating = usersList.map { user ->
                 UserToRatingData(
                     userName = user.name,
-                    totalRating = ratingRepository.getForUserWithDateRange(
+                    totalRating = getUserRatingUseCase(
                         user.id,
-                        uiState.value.startDate,
-                        uiState.value.endDate
-                    ).sumOf { it.total }
+                        _uiState.value.startDate,
+                        _uiState.value.endDate
+                    )
                 )
             }.sortedByDescending { it.totalRating }
             var rating = 0
             _uiState.value = _uiState.value.copy(
                 userToRatings = usersToRating.map { user ->
-                    rating++
                     user.copy(
-                        ratingPlace = rating
+                        ratingPlace = ++rating
                     )
                 }
             )

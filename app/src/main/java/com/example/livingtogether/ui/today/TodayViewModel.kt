@@ -6,11 +6,9 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.livingtogether.data.model.Rating
 import com.example.livingtogether.data.model.UsersHousework
 import com.example.livingtogether.domain.repository.AuthRepository
 import com.example.livingtogether.domain.repository.HouseworkRepository
-import com.example.livingtogether.domain.repository.RatingRepository
 import com.example.livingtogether.domain.repository.UserRepository
 import com.example.livingtogether.domain.repository.UsersHouseworkRepository
 import com.example.livingtogether.domain.usecase.GetUserHouseworkListUseCase
@@ -35,7 +33,6 @@ class TodayViewModel(
     private val usersHouseworkRepository: UsersHouseworkRepository,
     private val houseworkRepository: HouseworkRepository,
     private val userRepository: UserRepository,
-    private val ratingRepository: RatingRepository,
     private val getUserHouseworkListUseCase: GetUserHouseworkListUseCase
 ) : ViewModel() {
     var total by mutableIntStateOf(0)
@@ -69,13 +66,6 @@ class TodayViewModel(
                 } else {
                     0
                 }
-                ratingRepository.addOrUpdateForDate(
-                    Rating(
-                        userId = currentUserId,
-                        date = Date(_uiState.value.selectedDate),
-                        total = total
-                    )
-                )
             }
     }
 
