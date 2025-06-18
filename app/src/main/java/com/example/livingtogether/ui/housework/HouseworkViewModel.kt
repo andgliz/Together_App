@@ -38,6 +38,7 @@ class HouseworkViewModel(
                 _uiState.value =
                     HouseworkUiState(
                         houseworkList = housework.map { it.toHouseworkViewData() }
+                            .sortedBy { it.cost }
                     )
             }
         }
