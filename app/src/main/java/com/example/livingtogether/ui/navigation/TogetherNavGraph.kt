@@ -25,6 +25,8 @@ import com.example.livingtogether.ui.housework.HouseworkDestination
 import com.example.livingtogether.ui.housework.HouseworkScreen
 import com.example.livingtogether.ui.login.LoginDestination
 import com.example.livingtogether.ui.login.LoginScreen
+import com.example.livingtogether.ui.login.RegistrationDestination
+import com.example.livingtogether.ui.login.RegistrationScreen
 import com.example.livingtogether.ui.profile.ProfileDestination
 import com.example.livingtogether.ui.profile.ProfileScreen
 import com.example.livingtogether.ui.rating.RatingDestination
@@ -46,24 +48,24 @@ fun TogetherNavGraph(
         NavHost(
             navController = navController,
             startDestination = if (!isAuth) LoginDestination.route else if (isUserInFamily) RatingDestination.route else FamilyDestination.route,
-            modifier = modifier
+            modifier = modifier,
         ) {
             composable(route = TodayDestination.route) {
                 TodayScreen(
-                    title = TodayDestination.titleRes
+                    title = TodayDestination.titleRes,
                 )
             }
 
             composable(route = HouseworkDestination.route) {
                 HouseworkScreen(
-                    title = HouseworkDestination.titleRes
+                    title = HouseworkDestination.titleRes,
                 )
             }
 
             composable(route = RatingDestination.route) {
 
                 RatingScreen(
-                    title = RatingDestination.titleRes
+                    title = RatingDestination.titleRes,
                 )
             }
 
@@ -81,7 +83,22 @@ fun TogetherNavGraph(
                     title = LoginDestination.titleRes,
                     onSuccess = {
                         navController.navigate(if (isUserInFamily) RatingDestination.route else FamilyDestination.route)
-                    }
+                    },
+                    onRegistrationButtonClick = {
+                        navController.navigate(RegistrationDestination.route)
+                    },
+                )
+            }
+
+            composable(route = RegistrationDestination.route) {
+                RegistrationScreen(
+                    title = RegistrationDestination.titleRes,
+                    onSuccess = {
+                        navController.navigate(if (isUserInFamily) RatingDestination.route else FamilyDestination.route)
+                    },
+                    onLoginButtonClick = {
+                        navController.navigate(LoginDestination.route)
+                    },
                 )
             }
 
@@ -90,19 +107,18 @@ fun TogetherNavGraph(
                     title = FamilyDestination.titleRes,
                     onSuccess = {
                         navController.navigate(RatingDestination.route)
-                    }
+                    },
                 )
             }
         }
     }
-
 }
 
 @Composable
 fun NavigationBar(
     items: List<BottomMenuItem>,
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -125,8 +141,10 @@ fun NavigationBar(
                     )
                 },
                 label = {
-                    Text(text = stringResource(item.navigation.titleRes),
-                        style = AppTypography.titleSmall)
+                    Text(
+                        text = stringResource(item.navigation.titleRes),
+                        style = AppTypography.titleSmall
+                    )
                 },
                 alwaysShowLabel = false,
             )

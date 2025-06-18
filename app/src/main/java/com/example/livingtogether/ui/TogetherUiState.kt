@@ -15,13 +15,13 @@ import java.util.Date
 data class TodayUiState(
     val userHouseworkList: List<HouseworkViewData> = listOf(),
     val houseworkList: List<HouseworkViewData> = listOf(),
-    val selectedDate: String = ""
+    val selectedDate: String = "",
 )
 
 data class HouseworkUiState(
     val houseworkList: List<HouseworkViewData> = listOf(),
     val houseworkInput: HouseworkViewData = HouseworkViewData(),
-    val isEnabled: Boolean = false
+    val isEnabled: Boolean = false,
 )
 
 data class UserToRatingData(
@@ -39,7 +39,8 @@ data class RatingUiState(
 data class LoginUiState(
     val emailState: String = "",
     val passwordState: String = "",
-    val errorState: String = ""
+    val errorState: String = "",
+    val nameState: String = "",
 )
 
 data class ProfileUiState(
@@ -50,7 +51,7 @@ data class ProfileUiState(
 data class FamilyUiState(
     val nameState: String = "",
     val passwordState: String = "",
-    val errorState: String = ""
+    val errorState: String = "",
 )
 
 data class HouseworkViewData(
@@ -64,50 +65,50 @@ data class UserViewData(
     val id: String = "",
     val name: String = "",
     val email: String = "",
-    val family: String = ""
+    val family: String = "",
 )
 
 data class FamilyViewData(
     val id: String = "",
     val name: String = "",
-    val password: String = ""
+    val password: String = "",
 )
 
 data class RatingViewData(
     val id: String = "",
     val total: Int = 0,
     val date: Date = Date(),
-    val userId: String = ""
+    val userId: String = "",
 )
 
 data class UsersHouseworkViewData(
     val id: String = "",
     val userId: String = "",
-    val houseworkId: String = ""
+    val houseworkId: String = "",
 )
 
 sealed class BottomMenuItem(
     val navigation: NavigationDestination,
-    val icon: Int
+    val icon: Int,
 ) {
     object RatingItem : BottomMenuItem(
         navigation = RatingDestination,
-        icon = R.drawable.rating
+        icon = R.drawable.rating,
     )
 
     object TodayItem : BottomMenuItem(
         navigation = TodayDestination,
-        icon = R.drawable.today
+        icon = R.drawable.today,
     )
 
     object HouseworkItem : BottomMenuItem(
         navigation = HouseworkDestination,
-        icon = R.drawable.list
+        icon = R.drawable.list,
     )
 
     object ProfileItem : BottomMenuItem(
         navigation = ProfileDestination,
-        icon = R.drawable.profile
+        icon = R.drawable.profile,
     )
 }
 
@@ -115,53 +116,53 @@ fun HouseworkViewData.toHousework(family: String): Housework = Housework(
     id = id,
     name = name,
     cost = cost.toInt(),
-    family = family
+    family = family,
 )
 
 fun Housework.toHouseworkViewData(): HouseworkViewData = HouseworkViewData(
     id = id,
     name = name,
-    cost = cost.toString()
+    cost = cost.toString(),
 )
 
 fun UserViewData.toUser(): User = User(
     id = id,
     userName = name,
     email = email,
-    family = family
+    family = family,
 )
 
 fun User.toUserViewData(): UserViewData = UserViewData(
     id = id,
     name = userName,
     email = email,
-    family = family
+    family = family,
 )
 
 fun Family.toFamilyViewData(): FamilyViewData = FamilyViewData(
     id = id,
     name = name,
-    password = password
+    password = password,
 )
 
 fun FamilyViewData.toFamily(): Family = Family(
     id = id,
     name = name,
-    password = password
+    password = password,
 )
 
 fun Rating.toRatingViewData(): RatingViewData = RatingViewData(
     id = id,
     userId = userId,
     total = total,
-    date = date
+    date = date,
 )
 
 fun RatingViewData.toRating(): Rating = Rating(
     id = id,
     userId = userId,
     total = total,
-    date = date
+    date = date,
 )
 
 //fun Housework.toUsersHouseworkViewData(): UsersHouseworkViewData = UsersHouseworkViewData(

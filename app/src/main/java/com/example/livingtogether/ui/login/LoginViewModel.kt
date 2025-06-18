@@ -33,6 +33,12 @@ class LoginViewModel(
         )
     }
 
+    fun onNameChange(nameInput: String) {
+        _uiState.value = _uiState.value.copy(
+            nameState = nameInput
+        )
+    }
+
     private fun onError(error: String) {
         _uiState.value = _uiState.value.copy(
             errorState = error
@@ -42,18 +48,28 @@ class LoginViewModel(
     fun signUp(
         email: String,
         password: String,
+        name: String,
         onSuccess: () -> Unit,
     ) {
         if (email.isBlank() || password.isBlank()) {
             onError("Email and password cannot be empty.")
-        } else {
+        } else if (name.isBlank()) {
+            onError("Create a name")
+        }
+        else {
             viewModelScope.launch {
                 val result = authRepository.signUp(email, password)
                 if (result.isNotBlank()) {
                     onError(result)
                 } else {
                     onError("")
-                    userRepository.createUser(User(id = Firebase.auth.currentUser!!.uid, email = email))
+                    userRepository.createUser(
+                        User(
+                            id = Firebase.auth.currentUser!!.uid,
+                            email = email,
+                            userName = name
+                        )
+                    )
                     onSuccess()
                 }
             }

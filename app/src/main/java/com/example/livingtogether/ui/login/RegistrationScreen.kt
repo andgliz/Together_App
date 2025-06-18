@@ -27,18 +27,18 @@ import com.example.livingtogether.ui.AppViewModelProvider
 import com.example.livingtogether.ui.TogetherTopBar
 import com.example.livingtogether.ui.navigation.NavigationDestination
 
-object LoginDestination : NavigationDestination {
-    override val route = "login"
-    override val titleRes = R.string.login
+object RegistrationDestination : NavigationDestination {
+    override val route = "registration"
+    override val titleRes = R.string.registration
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(
+fun RegistrationScreen(
     viewModel: LoginViewModel = viewModel(factory = AppViewModelProvider.Factory),
     title: Int,
     onSuccess: () -> Unit,
-    onRegistrationButtonClick: () -> Unit,
+    onLoginButtonClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -62,6 +62,14 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.Center,
             ) {
                 TextField(
+                    value = uiState.nameState,
+                    label = { Text("Create a name") },
+                    onValueChange = viewModel::onNameChange,
+                )
+                Spacer(
+                    modifier = Modifier.height(10.dp),
+                )
+                TextField(
                     value = uiState.emailState,
                     label = { Text("Enter your email address") },
                     onValueChange = viewModel::onEmailChange,
@@ -71,7 +79,7 @@ fun LoginScreen(
                 )
                 TextField(
                     value = uiState.passwordState,
-                    label = { Text("Enter your password") },
+                    label = { Text("Create a password") },
                     onValueChange = viewModel::onPasswordChange,
                     modifier = Modifier.padding(bottom = 8.dp),
                 )
@@ -85,25 +93,25 @@ fun LoginScreen(
                 }
                 Button(
                     onClick = {
-                        viewModel.signIn(
+                        viewModel.signUp(
                             email = uiState.emailState,
                             password = uiState.passwordState,
+                            name = uiState.nameState,
                             onSuccess = onSuccess,
                         )
                     },
                 ) {
                     Text(
-                        text = "Sign In",
+                        text = "Sign Up",
                     )
                 }
                 TextButton(
                     onClick = {
-                        onRegistrationButtonClick()
+                        onLoginButtonClick()
                     },
                 ) {
                     Text(
-                        text = "Create a new account",
-                        modifier = Modifier,
+                        text = "Log in to your account",
                     )
                 }
             }
