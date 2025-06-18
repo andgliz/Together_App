@@ -1,14 +1,20 @@
 package com.example.livingtogether.ui.profile
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Button
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,6 +24,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -36,69 +43,145 @@ object ProfileDestination : NavigationDestination {
 fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
     title: Int,
-    onSuccess: () -> Unit
+    onDeleteAccountSuccess: () -> Unit,
+    onChangeFamilySuccess: () -> Unit,
 ) {
     Scaffold(
         topBar = {
             TogetherTopBar(
                 title = stringResource(title),
-                modifier = Modifier
+                modifier = Modifier,
             )
-        }
+            Row(
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 30.dp, end = 16.dp),
+            ) {
+                FloatingActionButton(
+                    onClick = { viewModel.signOut(onDeleteAccountSuccess) },
+                    modifier = Modifier,
+                    containerColor = Color.Unspecified,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.ExitToApp,
+                        contentDescription = null,
+                    )
+                }
+            }
+        },
+        floatingActionButtonPosition = FabPosition.End,
     ) { innerPadding ->
         Surface(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             val profileUiState by viewModel.uiState.collectAsState()
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .padding(horizontal = 8.dp)
+                    .padding(horizontal = 16.dp),
             ) {
-                Row {
+                NameCard(
+                    text = "Your name: ",
+                    name = profileUiState.userName,
+                )
+                NameChangingTextField(
+                    text = "Change name",
+                    value = profileUiState.user.name,
+                    onValueChange = viewModel::onNameInputChanged,
+                    onButtonClick = { viewModel.onChangeNameButtonClicked() },
+                )
+                NameCard(
+                    text = "Your family: ",
+                    name = profileUiState.familyName,
+                )
+                NameChangingTextField(
+                    text = "Change family name",
+                    value = profileUiState.user.family,
+                    onValueChange = viewModel::onFamilyNameInputChanged,
+                    onButtonClick = { viewModel.onChangeFamilyNameButtonClicked() },
+                )
+                if (profileUiState.errorState.isNotBlank()) {
                     Text(
-                        text = "Ваше имя: "
-                    )
-                    Text(
-                        text = profileUiState.userName
+                        text = profileUiState.errorState,
+                        color = Color(0xFFAF0F1A),
                     )
                 }
-                Spacer(
-                    modifier = Modifier.height(16.dp)
-                )
-                TextField(
-                    value = profileUiState.user.name,
-                    label = { Text("Введите новое имя") },
-                    onValueChange = viewModel::onNameInputChanged,
+                Button(
+                    onClick = { viewModel.onChangeFamilyClicked(onChangeFamilySuccess) },
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .fillMaxWidth()
-                )
-                Button(
-                    onClick = { viewModel.onChangeNameButtonClicked() },
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                        .width(160.dp)
+                        .padding(bottom = 8.dp),
                 ) {
                     Text(
-                        text = "Изменить"
+                        text = "Change family",
                     )
                 }
                 Button(
-                    onClick = { viewModel.signOut(onSuccess) }
+                    onClick = { viewModel.onDeleteAccountClicked(onDeleteAccountSuccess) },
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .width(160.dp),
                 ) {
                     Text(
-                        text = "Sign Out"
-                    )
-                }
-                Button(
-                    onClick = { viewModel.onDeleteAccountClicked(onSuccess) }
-                ) {
-                    Text(
-                        text = "Delete Account"
+                        text = "Delete account",
                     )
                 }
             }
         }
     }
+}
 
+@Composable
+fun NameCard(
+    text: String,
+    name: String,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = Modifier.padding(bottom = 8.dp),
+    ) {
+        Text(
+            text = text,
+        )
+        Text(
+            text = name,
+        )
+    }
+}
 
+@Composable
+fun NameChangingTextField(
+    text: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    onButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        TextField(
+            value = value,
+            label = { Text(text) },
+            onValueChange = { onValueChange(it) },
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .weight(3f)
+                .padding(end = 8.dp),
+        )
+        FloatingActionButton(
+            onClick = { onButtonClick() },
+            modifier = Modifier.weight(0.55f),
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Check,
+                contentDescription = null,
+            )
+        }
+    }
 }

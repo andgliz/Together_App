@@ -72,9 +72,12 @@ fun TogetherNavGraph(
             composable(route = ProfileDestination.route) {
                 ProfileScreen(
                     title = ProfileDestination.titleRes,
-                    onSuccess = {
+                    onDeleteAccountSuccess = {
                         navController.navigate(LoginDestination.route)
-                    }
+                    },
+                    onChangeFamilySuccess = {
+                        navController.navigate(FamilyDestination.route)
+                    },
                 )
             }
 

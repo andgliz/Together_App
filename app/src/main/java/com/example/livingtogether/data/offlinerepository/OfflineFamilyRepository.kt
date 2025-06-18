@@ -10,6 +10,10 @@ class OfflineFamilyRepository(private val familyRemoteDataSource: FamilyRemoteDa
         return familyRemoteDataSource.findFamily(name = name, password = password)
     }
 
+    override suspend fun getFamily(familyId: String): Family? {
+        return familyRemoteDataSource.getFamily(familyId)
+    }
+
     override suspend fun createFamily(family: Family): String {
         return familyRemoteDataSource.createFamily(family)
     }

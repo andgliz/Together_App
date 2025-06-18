@@ -2,6 +2,7 @@ package com.example.livingtogether.data.datasource
 
 import com.example.livingtogether.data.model.Family
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.tasks.await
 
@@ -15,6 +16,10 @@ class FamilyRemoteDataSource(private val firestore: FirebaseFirestore) {
             .get()
             .await()
             .toObjects<Family>().first().id
+    }
+
+    suspend fun getFamily(familyId: String): Family? {
+        return firestore.collection(FAMILY_COLLECTION).document(familyId).get().await().toObject()
     }
 
     suspend fun createFamily(family: Family): String {

@@ -45,7 +45,9 @@ data class LoginUiState(
 
 data class ProfileUiState(
     val user: UserViewData = UserViewData(),
+    val familyName: String = "",
     val userName: String = "",
+    val errorState: String = "",
 )
 
 data class FamilyUiState(
