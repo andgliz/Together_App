@@ -61,7 +61,7 @@ class FamilyViewModel(
             viewModelScope.launch {
                 val familyId =
                     familyRepository.findFamily(name = name, password = password)
-                if (familyId != "") {
+                if (familyId != null) {
                     userRepository.updateUser(
                         currentUser!!.copy(
                             family = familyId

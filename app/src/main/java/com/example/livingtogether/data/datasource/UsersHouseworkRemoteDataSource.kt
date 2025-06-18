@@ -44,6 +44,15 @@ class UsersHouseworkRemoteDataSource(private val firestore: FirebaseFirestore) {
         firestore.collection(USERS_HOUSEWORK_COLLECTION).document(usersHouseworkId).delete().await()
     }
 
+    suspend fun deleteAllByUserId(userId: String) {
+        firestore.collection(USERS_HOUSEWORK_COLLECTION)
+            .whereEqualTo(USER_ID, userId)
+            .get()
+            .await()
+            .toObjects<UsersHousework>()
+            .map { deleteUsersHousework(it.id) }
+    }
+
     suspend fun deleteAllByHouseworkId(houseworkId: String) {
         firestore.collection(USERS_HOUSEWORK_COLLECTION)
             .whereEqualTo(HOUSEWORK_ID, houseworkId)

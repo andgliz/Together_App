@@ -4,7 +4,7 @@ import com.example.livingtogether.data.model.Family
 
 interface FamilyRepository {
 
-    suspend fun findFamily(name: String, password: String): String
+    suspend fun findFamily(name: String, password: String): String?
 
     suspend fun getFamily(familyId: String): Family?
 

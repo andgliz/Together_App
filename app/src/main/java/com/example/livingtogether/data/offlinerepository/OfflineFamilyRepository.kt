@@ -6,7 +6,7 @@ import com.example.livingtogether.domain.repository.FamilyRepository
 
 class OfflineFamilyRepository(private val familyRemoteDataSource: FamilyRemoteDataSource) :
     FamilyRepository {
-    override suspend fun findFamily(name: String, password: String): String {
+    override suspend fun findFamily(name: String, password: String): String? {
         return familyRemoteDataSource.findFamily(name = name, password = password)
     }
 

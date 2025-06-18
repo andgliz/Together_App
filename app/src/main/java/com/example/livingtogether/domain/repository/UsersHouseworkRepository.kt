@@ -14,4 +14,6 @@ interface UsersHouseworkRepository {
     suspend fun createUsersHousework(usersHousework: UsersHousework)
 
     suspend fun deleteUsersHousework(usersHouseworkId: String)
+
+    suspend fun deleteAllByUserId(userId: String)
 }

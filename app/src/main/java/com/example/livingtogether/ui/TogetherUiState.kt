@@ -3,7 +3,6 @@ package com.example.livingtogether.ui
 import com.example.livingtogether.R
 import com.example.livingtogether.data.model.Family
 import com.example.livingtogether.data.model.Housework
-import com.example.livingtogether.data.model.Rating
 import com.example.livingtogether.data.model.User
 import com.example.livingtogether.ui.housework.HouseworkDestination
 import com.example.livingtogether.ui.navigation.NavigationDestination
@@ -76,13 +75,6 @@ data class FamilyViewData(
     val password: String = "",
 )
 
-data class RatingViewData(
-    val id: String = "",
-    val total: Int = 0,
-    val date: Date = Date(),
-    val userId: String = "",
-)
-
 data class UsersHouseworkViewData(
     val id: String = "",
     val userId: String = "",
@@ -151,20 +143,6 @@ fun FamilyViewData.toFamily(): Family = Family(
     id = id,
     name = name,
     password = password,
-)
-
-fun Rating.toRatingViewData(): RatingViewData = RatingViewData(
-    id = id,
-    userId = userId,
-    total = total,
-    date = date,
-)
-
-fun RatingViewData.toRating(): Rating = Rating(
-    id = id,
-    userId = userId,
-    total = total,
-    date = date,
 )
 
 //fun Housework.toUsersHouseworkViewData(): UsersHouseworkViewData = UsersHouseworkViewData(

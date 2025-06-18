@@ -6,6 +6,8 @@ import com.example.livingtogether.data.model.Family
 import com.example.livingtogether.domain.repository.AuthRepository
 import com.example.livingtogether.domain.repository.FamilyRepository
 import com.example.livingtogether.domain.repository.UserRepository
+import com.example.livingtogether.domain.usecase.DeleteUserFromFamilyUseCase
+import com.example.livingtogether.domain.usecase.DeleteUserUseCase
 import com.example.livingtogether.ui.ProfileUiState
 import com.example.livingtogether.ui.UserViewData
 import com.example.livingtogether.ui.toUser
@@ -19,6 +21,8 @@ class ProfileViewModel(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
     private val familyRepository: FamilyRepository,
+    private val deleteUserFromFamilyUseCase: DeleteUserFromFamilyUseCase,
+    private val deleteUserUseCase: DeleteUserUseCase,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<ProfileUiState> = MutableStateFlow(ProfileUiState())
@@ -80,12 +84,14 @@ class ProfileViewModel(
         } else {
             viewModelScope.launch {
                 userRepository.updateUser(
-                    _uiState.value.user.toUser()
+                    _uiState.value.user.toUser().copy(
+                        family = currentFamily.id
+                    )
                 )
                 _uiState.value = _uiState.value.copy(
                     userName = _uiState.value.user.name,
                     user = _uiState.value.user.copy(
-                        name = ""
+                        name = "",
                     ),
                     errorState = "",
                 )
@@ -111,15 +117,14 @@ class ProfileViewModel(
 
     fun onChangeFamilyClicked(onSuccess: () -> Unit) {
         viewModelScope.launch {
-            userRepository.updateUser(currentUser.toUser().copy(family = ""))
+            deleteUserFromFamilyUseCase(currentUser.toUser())
             onSuccess()
         }
     }
 
     fun onDeleteAccountClicked(onSuccess: () -> Unit) {
         viewModelScope.launch {
-            userRepository.deleteUser(authRepository.currentUser!!.uid)
-            authRepository.deleteAccount()
+            deleteUserUseCase(currentUser.id)
             onSuccess()
         }
     }

@@ -16,6 +16,8 @@ import com.example.livingtogether.domain.repository.FamilyRepository
 import com.example.livingtogether.domain.repository.HouseworkRepository
 import com.example.livingtogether.domain.repository.UserRepository
 import com.example.livingtogether.domain.repository.UsersHouseworkRepository
+import com.example.livingtogether.domain.usecase.DeleteUserFromFamilyUseCase
+import com.example.livingtogether.domain.usecase.DeleteUserUseCase
 import com.example.livingtogether.domain.usecase.GetUserHouseworkListUseCase
 import com.example.livingtogether.domain.usecase.GetUserRatingUseCase
 import com.google.firebase.auth.FirebaseAuth
@@ -29,6 +31,8 @@ interface AppContainer {
     val usersHouseworkRepository: UsersHouseworkRepository
     val getUserHouseworkListUseCase: GetUserHouseworkListUseCase
     val getUserRatingUseCase: GetUserRatingUseCase
+    val deleteUserFromFamilyUseCase: DeleteUserFromFamilyUseCase
+    val deleteUserUseCase: DeleteUserUseCase
 }
 
 class AppDataContainer(private val context: Context) : AppContainer {
@@ -46,14 +50,32 @@ class AppDataContainer(private val context: Context) : AppContainer {
     }
 
     override val houseworkRepository: HouseworkRepository by lazy {
-        OfflineHouseworkRepository(HouseworkRemoteDataSource(FirebaseFirestore.getInstance()), UsersHouseworkRemoteDataSource(FirebaseFirestore.getInstance()))
+        OfflineHouseworkRepository(
+            HouseworkRemoteDataSource(FirebaseFirestore.getInstance()),
+            UsersHouseworkRemoteDataSource(FirebaseFirestore.getInstance())
+        )
     }
 
     override val usersHouseworkRepository: UsersHouseworkRepository by lazy {
         OfflineUsersHouseworkRepository(UsersHouseworkRemoteDataSource(FirebaseFirestore.getInstance()))
     }
 
-    override val getUserHouseworkListUseCase: GetUserHouseworkListUseCase = GetUserHouseworkListUseCase(houseworkRepository)
+    override val getUserHouseworkListUseCase: GetUserHouseworkListUseCase =
+        GetUserHouseworkListUseCase(houseworkRepository)
 
-    override val getUserRatingUseCase: GetUserRatingUseCase = GetUserRatingUseCase(usersHouseworkRepository, houseworkRepository)
+    override val getUserRatingUseCase: GetUserRatingUseCase =
+        GetUserRatingUseCase(usersHouseworkRepository, houseworkRepository)
+
+    override val deleteUserFromFamilyUseCase: DeleteUserFromFamilyUseCase =
+        DeleteUserFromFamilyUseCase(
+            userRepository = userRepository,
+            usersHouseworkRepository = usersHouseworkRepository,
+        )
+
+    override val deleteUserUseCase: DeleteUserUseCase =
+        DeleteUserUseCase(
+            authRepository = authRepository,
+            userRepository = userRepository,
+            usersHouseworkRepository = usersHouseworkRepository
+        )
 }

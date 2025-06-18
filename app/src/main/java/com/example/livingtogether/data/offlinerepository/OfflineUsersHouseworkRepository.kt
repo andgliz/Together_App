@@ -35,4 +35,8 @@ class OfflineUsersHouseworkRepository(private val usersHouseworkRemoteDataSource
         usersHouseworkRemoteDataSource.deleteUsersHousework(usersHouseworkId)
     }
 
+    override suspend fun deleteAllByUserId(userId: String) {
+        usersHouseworkRemoteDataSource.deleteAllByUserId(userId)
+    }
+
 }

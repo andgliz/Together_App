@@ -8,14 +8,19 @@ import kotlinx.coroutines.tasks.await
 
 class FamilyRemoteDataSource(private val firestore: FirebaseFirestore) {
 
-    suspend fun findFamily(name: String, password: String): String {
-        return firestore
+    suspend fun findFamily(name: String, password: String): String? {
+        val findFamily =  firestore
             .collection(FAMILY_COLLECTION)
             .whereEqualTo(NAME_FIELD, name)
             .whereEqualTo(PASSWORD_FIELD, password)
             .get()
             .await()
-            .toObjects<Family>().first().id
+            .toObjects<Family>()
+        return if (findFamily.isEmpty()) {
+            null
+        } else {
+            findFamily.first().id
+        }
     }
 
     suspend fun getFamily(familyId: String): Family? {
