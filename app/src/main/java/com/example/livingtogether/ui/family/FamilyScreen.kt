@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,18 +34,18 @@ object FamilyDestination : NavigationDestination {
 fun FamilyScreen(
     viewModel: FamilyViewModel = viewModel(factory = AppViewModelProvider.Factory),
     title: Int,
-    onSuccess: () -> Unit
+    onSuccess: () -> Unit,
 ) {
     Scaffold(
         topBar = {
             TogetherTopBar(
                 title = stringResource(title),
-                modifier = Modifier
+                modifier = Modifier,
             )
         }
     ) { innerPadding ->
         Surface(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             val uiState by viewModel.uiState.collectAsState()
 
@@ -54,35 +55,40 @@ fun FamilyScreen(
                     .padding(innerPadding)
                     .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
             ) {
                 TextField(
                     value = uiState.nameState,
-                    onValueChange = viewModel::onNameChange
+                    label = { Text("Enter the family name") },
+                    onValueChange = viewModel::onNameChange,
                 )
                 Spacer(
-                    modifier = Modifier.height(10.dp)
+                    modifier = Modifier.height(10.dp),
                 )
                 TextField(
                     value = uiState.passwordState,
-                    onValueChange = viewModel::onPasswordChange
+                    label = { Text("Enter the family password") },
+                    onValueChange = viewModel::onPasswordChange,
                 )
                 if (uiState.errorState.isNotBlank()) {
                     Text(
-                        text = uiState.errorState
-                    )
+                        text = uiState.errorState,
+                        color = Color(0xFFAF0F1A),
+                        modifier = Modifier.padding(top = 8.dp),
+                        )
                 }
                 Button(
                     onClick = {
                         viewModel.onJoinTheFamilyButtonClicked(
                             name = uiState.nameState,
                             password = uiState.passwordState,
-                            onSuccess = onSuccess
+                            onSuccess = onSuccess,
                         )
-                    }
+                    },
+                    modifier = Modifier.padding(top = 8.dp),
                 ) {
                     Text(
-                        text = "Join to the family"
+                        text = "Join to the family",
                     )
                 }
                 Button(
@@ -90,12 +96,12 @@ fun FamilyScreen(
                         viewModel.onCreateTheFamilyButtonClicked(
                             name = uiState.nameState,
                             password = uiState.passwordState,
-                            onSuccess = onSuccess
+                            onSuccess = onSuccess,
                         )
                     }
                 ) {
                     Text(
-                        text = "Create the family"
+                        text = "Create the family",
                     )
                 }
             }
