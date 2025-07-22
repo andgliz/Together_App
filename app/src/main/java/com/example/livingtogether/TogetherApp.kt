@@ -15,7 +15,7 @@ import com.example.livingtogether.ui.navigation.TogetherNavGraph
 @Composable
 fun TogetherApp(
     navController: NavHostController = rememberNavController(),
-    viewModel: TogetherViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: TogetherViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
     val isUserAuthorized = viewModel.isUserAuthorized
     val isUserInFamily = viewModel.isUserInFamily
@@ -32,15 +32,15 @@ fun TogetherApp(
             if (isUserAuthorized && isUserInFamily) {
                 NavigationBar(
                     items = items,
-                    navController = navController
+                    navController = navController,
                 )
             }
-        }
+        },
     ) {
         TogetherNavGraph(
             navController = navController,
             isAuth = isUserAuthorized,
-            isUserInFamily = isUserInFamily
+            isUserInFamily = isUserInFamily,
         )
     }
 }

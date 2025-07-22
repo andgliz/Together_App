@@ -75,12 +75,6 @@ data class FamilyViewData(
     val password: String = "",
 )
 
-data class UsersHouseworkViewData(
-    val id: String = "",
-    val userId: String = "",
-    val houseworkId: String = "",
-)
-
 sealed class BottomMenuItem(
     val navigation: NavigationDestination,
     val icon: Int,
@@ -132,21 +126,3 @@ fun User.toUserViewData(): UserViewData = UserViewData(
     email = email,
     family = family,
 )
-
-fun Family.toFamilyViewData(): FamilyViewData = FamilyViewData(
-    id = id,
-    name = name,
-    password = password,
-)
-
-fun FamilyViewData.toFamily(): Family = Family(
-    id = id,
-    name = name,
-    password = password,
-)
-
-//fun Housework.toUsersHouseworkViewData(): UsersHouseworkViewData = UsersHouseworkViewData(
-//    id = id,
-//    name = name,
-//    cost = cost.toString()
-//)

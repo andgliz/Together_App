@@ -7,5 +7,5 @@ data class UsersHousework(
     @DocumentId val id: String = "",
     val userId: String = "",
     val houseworkId: String = "",
-    val date: Date = Date()
+    val date: Date = Date(),
 )

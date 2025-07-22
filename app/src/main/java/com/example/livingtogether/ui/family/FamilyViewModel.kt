@@ -73,7 +73,6 @@ class FamilyViewModel(
                 }
             }
         }
-
     }
 
     fun onCreateTheFamilyButtonClicked(

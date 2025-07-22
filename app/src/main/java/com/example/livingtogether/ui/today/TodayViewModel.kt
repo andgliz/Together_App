@@ -60,7 +60,8 @@ class TodayViewModel(
             .onEach { userHouseworkList ->
                 val getUserHouseworkList = getUserHouseworkListUseCase(userHouseworkList)
                 _uiState.value = _uiState.value.copy(
-                    userHouseworkList = getUserHouseworkList.map { it.toHouseworkViewData() })
+                    userHouseworkList = getUserHouseworkList.map { it.toHouseworkViewData() },
+                )
                 total = if (getUserHouseworkList.isNotEmpty()) {
                     getUserHouseworkList.sumOf { it.cost }
                 } else {
@@ -75,7 +76,7 @@ class TodayViewModel(
                 houseworkList = houseworkRepository.getHouseworkList(
                     userRepository.getUser(
                         currentUserId
-                    )!!.family
+                    )!!.family,
                 ).map { it.toHouseworkViewData() }
             )
         }
@@ -97,7 +98,7 @@ class TodayViewModel(
                 UsersHousework(
                     userId = currentUserId,
                     houseworkId = housework.id,
-                    date = Date(uiState.value.selectedDate)
+                    date = Date(uiState.value.selectedDate),
                 )
             )
 

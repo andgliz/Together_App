@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 @Composable
 fun DatePickerModal(
     onDateSelected: (Long) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     val datePickerState = rememberDatePickerState()
 
@@ -24,7 +24,7 @@ fun DatePickerModal(
                     onDateSelected(datePickerState.selectedDateMillis!!)
                     onDismiss()
                 },
-                enabled = datePickerState.selectedDateMillis != null
+                enabled = datePickerState.selectedDateMillis != null,
             ) {
                 Text("OK")
             }
@@ -33,7 +33,7 @@ fun DatePickerModal(
             TextButton(onClick = onDismiss) {
                 Text("Cancel")
             }
-        }
+        },
     ) {
         DatePicker(state = datePickerState)
     }

@@ -43,7 +43,7 @@ fun TogetherNavGraph(
     isUserInFamily: Boolean
 ) {
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         NavHost(
             navController = navController,
@@ -128,7 +128,7 @@ fun NavigationBar(
     val currentRoute = navBackStackEntry?.destination?.route
 
     NavigationBar(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         items.forEach { item ->
             NavigationBarItem(

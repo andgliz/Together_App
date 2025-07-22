@@ -29,7 +29,7 @@ fun Dialog(
     dialogTitle: String,
     buttonText: String,
     onDismissRequest: () -> Unit,
-    onConfirmation: (HouseworkViewData) -> Unit
+    onConfirmation: (HouseworkViewData) -> Unit,
 ) {
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
@@ -48,24 +48,26 @@ fun Dialog(
             ) {
                 Text(
                     text = dialogTitle,
-                    modifier = Modifier.weight(0.6f)
+                    modifier = Modifier.weight(0.6f),
                 )
                 LazyColumn(modifier = Modifier.weight(3.5f)) {
                     items(houseworkList) { housework ->
-                        Row(modifier = Modifier,
-                            verticalAlignment = Alignment.CenterVertically) {
+                        Row(
+                            modifier = Modifier,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
                             Text(
                                 text = housework.name,
-                                modifier = Modifier.weight(3f)
+                                modifier = Modifier.weight(3f),
                             )
                             Text(
                                 text = housework.cost,
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
                             )
                             TextButton(
                                 onClick = { onConfirmation(housework) },
                                 modifier = Modifier
-                                    .weight(1f)
+                                    .weight(1f),
                             ) {
                                 Text(
                                     text = buttonText,
@@ -82,7 +84,7 @@ fun Dialog(
                 ) {
                     Text(
                         text = stringResource(R.string.cancel),
-                        fontSize = 16.sp
+                        fontSize = 16.sp,
                     )
                 }
             }

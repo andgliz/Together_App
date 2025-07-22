@@ -6,5 +6,5 @@ data class Housework(
     @DocumentId val id: String = "",
     val name: String = "",
     val cost: Int = 0,
-    val family: String = ""
+    val family: String = "",
 )

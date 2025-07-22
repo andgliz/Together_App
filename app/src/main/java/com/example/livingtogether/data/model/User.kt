@@ -6,5 +6,5 @@ data class User(
     @DocumentId val id: String = "",
     val email: String = "",
     val userName: String = "",
-    val family: String = ""
+    val family: String = "",
 )

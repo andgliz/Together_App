@@ -53,18 +53,18 @@ object TodayDestination : NavigationDestination {
 @Composable
 fun TodayScreen(
     viewModel: TodayViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    title: Int
+    title: Int,
 ) {
     Scaffold(
         topBar = {
             TogetherTopBar(
                 title = stringResource(title),
-                modifier = Modifier
+                modifier = Modifier,
             )
         }
     ) { innerPadding ->
         Surface(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             val todayUiState by viewModel.uiState.collectAsState()
             val total = viewModel.total
@@ -81,7 +81,7 @@ fun TodayScreen(
                     viewModel.onPlusButtonClicked()
                 },
                 onDeleteButtonClick = viewModel::onDeleteClicked,
-                onCalendarButtonClick = { showModal.value = true }
+                onCalendarButtonClick = { showModal.value = true },
             )
 
             if (showModal.value) {
@@ -89,7 +89,7 @@ fun TodayScreen(
                     onDateSelected = viewModel::onChangeDate,
                     onDismiss = {
                         showModal.value = false
-                    }
+                    },
                 )
             }
 
@@ -104,7 +104,7 @@ fun TodayScreen(
                     },
                     houseworkList = todayUiState.houseworkList,
                     dialogTitle = stringResource(R.string.add_title),
-                    buttonText = stringResource(R.string.add)
+                    buttonText = stringResource(R.string.add),
                 )
             }
         }
@@ -119,7 +119,7 @@ fun DoneList(
     onPlusButtonClick: () -> Unit,
     onDeleteButtonClick: (HouseworkViewData) -> Unit,
     modifier: Modifier = Modifier,
-    onCalendarButtonClick: () -> Unit
+    onCalendarButtonClick: () -> Unit,
 ) {
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
@@ -134,13 +134,13 @@ fun DoneList(
                 IconButton(onClick = { onCalendarButtonClick() }) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        contentDescription = "Select date"
+                        contentDescription = "Select date",
                     )
                 }
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp)
+                .height(64.dp),
         )
 
         Row(
@@ -148,17 +148,17 @@ fun DoneList(
                 .padding(top = 8.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = "Done:",
             )
             FloatingActionButton(
-                onClick = { onPlusButtonClick() }
+                onClick = { onPlusButtonClick() },
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
-                    contentDescription = "Add"
+                    contentDescription = "Add",
                 )
             }
         }
@@ -167,7 +167,7 @@ fun DoneList(
             modifier = Modifier
                 .weight(1f)
                 .padding(horizontal = 24.dp)
-                .padding(top = 8.dp)
+                .padding(top = 8.dp),
         ) {
             items(housework) { housework ->
                 Row {
@@ -175,13 +175,13 @@ fun DoneList(
                         text = housework.name,
                         modifier = Modifier
                             .weight(3.5f)
-                            .align(Alignment.CenterVertically)
+                            .align(Alignment.CenterVertically),
                     )
                     Text(
                         text = housework.cost,
                         modifier = Modifier
                             .weight(1f)
-                            .align(Alignment.CenterVertically)
+                            .align(Alignment.CenterVertically),
                     )
                     Card(
                         modifier = Modifier
@@ -192,15 +192,15 @@ fun DoneList(
                             contentColor = Color.Unspecified,
                             disabledContainerColor = Color.Unspecified,
                             disabledContentColor = Color.Unspecified
-                        )
+                        ),
                     ) {
                         IconButton(
                             onClick = { onDeleteButtonClick(housework) },
-                            modifier = Modifier.align(Alignment.End)
+                            modifier = Modifier.align(Alignment.End),
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.Delete,
-                                contentDescription = null
+                                contentDescription = null,
                             )
                         }
                     }
@@ -219,14 +219,14 @@ fun DoneList(
             text = "Total:",
             modifier = Modifier.weight(1f),
             fontSize = 24.sp,
-            fontStyle = FontStyle.Italic
+            fontStyle = FontStyle.Italic,
         )
         Text(
             text = total.toString(),
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.End,
             fontSize = 24.sp,
-            fontStyle = FontStyle.Italic
+            fontStyle = FontStyle.Italic,
         )
     }
 }

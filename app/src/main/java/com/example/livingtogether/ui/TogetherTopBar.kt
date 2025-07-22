@@ -11,10 +11,15 @@ import com.example.ui.theme.AppTypography
 @Composable
 fun TogetherTopBar(
     title: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     CenterAlignedTopAppBar(
-        title = { Text(text = title, style = AppTypography.headlineMedium) },
-        modifier = Modifier
+        title = {
+            Text(
+                text = title,
+                style = AppTypography.headlineMedium,
+            )
+        },
+        modifier = Modifier,
     )
 }

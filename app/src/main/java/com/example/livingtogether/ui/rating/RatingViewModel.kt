@@ -31,7 +31,7 @@ class RatingViewModel(
     private val _uiState: MutableStateFlow<RatingUiState> = MutableStateFlow(
         RatingUiState(
             startDate = getDate(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
-            endDate = getDate(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))
+            endDate = getDate(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY)),
         )
     )
     val uiState: StateFlow<RatingUiState> = _uiState.asStateFlow()
@@ -55,7 +55,7 @@ class RatingViewModel(
                     totalRating = getUserRatingUseCase(
                         user.id,
                         _uiState.value.startDate,
-                        _uiState.value.endDate
+                        _uiState.value.endDate,
                     )
                 )
             }.sortedByDescending { it.totalRating }
@@ -63,9 +63,9 @@ class RatingViewModel(
             _uiState.value = _uiState.value.copy(
                 userToRatings = usersToRating.map { user ->
                     user.copy(
-                        ratingPlace = ++rating
+                        ratingPlace = ++rating,
                     )
-                }
+                },
             )
         }
     }
@@ -74,7 +74,7 @@ class RatingViewModel(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
                 startDate = convertToDate(start),
-                endDate = convertToDate(end)
+                endDate = convertToDate(end),
             )
             initializeUiState(userRepository.getUser(authRepository.currentUser!!.uid)!!.family)
         }

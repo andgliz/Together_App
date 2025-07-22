@@ -45,12 +45,11 @@ class ProfileViewModel(
                 )
             )
         }
-
     }
 
     private fun onError(error: String) {
         _uiState.value = _uiState.value.copy(
-            errorState = error
+            errorState = error,
         )
     }
 
@@ -70,7 +69,7 @@ class ProfileViewModel(
                 _uiState.value = _uiState.value.copy(
                     familyName = _uiState.value.user.family,
                     user = _uiState.value.user.copy(
-                        family = ""
+                        family = "",
                     ),
                     errorState = "",
                 )
@@ -85,7 +84,7 @@ class ProfileViewModel(
             viewModelScope.launch {
                 userRepository.updateUser(
                     _uiState.value.user.toUser().copy(
-                        family = currentFamily.id
+                        family = currentFamily.id,
                     )
                 )
                 _uiState.value = _uiState.value.copy(

@@ -22,7 +22,7 @@ import com.example.livingtogether.ui.UserToRatingData
 @Composable
 fun RatingCard(
     userToRatings: UserToRatingData,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val image = when (userToRatings.ratingPlace) {
         1 -> painterResource(R.drawable.first_place)
@@ -30,16 +30,18 @@ fun RatingCard(
         3 -> painterResource(R.drawable.third_place)
         else -> painterResource(R.drawable.another_place)
     }
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .height(80.dp)
-        .padding(vertical = 4.dp)) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(80.dp)
+            .padding(vertical = 4.dp),
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 modifier = Modifier
@@ -48,15 +50,15 @@ fun RatingCard(
             ) {
                 Text(
                     text = userToRatings.userName,
-                    fontSize = 24.sp
+                    fontSize = 24.sp,
                 )
                 Text(
-                    text = userToRatings.totalRating.toString()
+                    text = userToRatings.totalRating.toString(),
                 )
             }
             Image(
                 painter = image,
-                contentDescription = "rating_place"
+                contentDescription = "rating_place",
             )
         }
     }

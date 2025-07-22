@@ -1,0 +1,28 @@
+package com.example.livingtogether.data.repository
+
+import com.example.livingtogether.data.datasource.FamilyRemoteDataSource
+import com.example.livingtogether.data.model.Family
+import com.example.livingtogether.domain.repository.FamilyRepository
+
+class FamilyRepositoryImpl(private val familyRemoteDataSource: FamilyRemoteDataSource) :
+    FamilyRepository {
+    override suspend fun findFamily(name: String, password: String): String? {
+        return familyRemoteDataSource.findFamily(name = name, password = password)
+    }
+
+    override suspend fun getFamily(familyId: String): Family? {
+        return familyRemoteDataSource.getFamily(familyId)
+    }
+
+    override suspend fun createFamily(family: Family): String {
+        return familyRemoteDataSource.createFamily(family)
+    }
+
+    override suspend fun updateFamily(family: Family) {
+        familyRemoteDataSource.updateFamily(family)
+    }
+
+    override suspend fun deleteFamily(familyId: String) {
+        familyRemoteDataSource.deleteFamily(familyId)
+    }
+}

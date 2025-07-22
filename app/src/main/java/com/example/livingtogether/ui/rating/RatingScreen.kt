@@ -49,18 +49,18 @@ object RatingDestination : NavigationDestination {
 @Composable
 fun RatingScreen(
     viewModel: RatingViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    title: Int
+    title: Int,
 ) {
     Scaffold(
         topBar = {
             TogetherTopBar(
                 title = stringResource(title),
-                modifier = Modifier
+                modifier = Modifier,
             )
         }
     ) { innerPadding ->
         Surface(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             var showModal by remember { mutableStateOf(false) }
             val uiState by viewModel.uiState.collectAsState()
@@ -69,7 +69,7 @@ fun RatingScreen(
                 modifier = Modifier
                     .padding(innerPadding)
                     .padding(horizontal = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 OutlinedTextField(
                     value = convertMillisToDate(uiState.startDate.toString()) + " - " + convertMillisToDate(
@@ -92,19 +92,19 @@ fun RatingScreen(
                                     showModal = true
                                 }
                             }
-                        }
+                        },
                 )
                 if (showModal) {
                     DateRangePickerModal(
                         onDateRangeSelected = {
                             viewModel.changeDate(it.first, it.second)
                         },
-                        onDismiss = { showModal = false }
+                        onDismiss = { showModal = false },
                     )
                 }
                 RatingList(
                     ratingList = uiState.userToRatings,
-                    modifier = Modifier.height(652.dp)
+                    modifier = Modifier.height(652.dp),
                 )
             }
         }
@@ -114,17 +114,17 @@ fun RatingScreen(
 @Composable
 fun RatingList(
     ratingList: List<UserToRatingData>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier
             .padding(vertical = 8.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         items(ratingList) { user ->
             RatingCard(
                 userToRatings = user,
-                modifier = modifier
+                modifier = modifier,
             )
         }
     }

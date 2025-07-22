@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class TogetherViewModel(
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     var isUserAuthorized by mutableStateOf(authRepository.currentUser != null)
@@ -45,6 +45,5 @@ class TogetherViewModel(
                 isUserInFamily = !user?.family.isNullOrEmpty()
             }
         }
-
     }
 }

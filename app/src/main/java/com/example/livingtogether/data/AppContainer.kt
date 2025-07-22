@@ -6,11 +6,11 @@ import com.example.livingtogether.data.datasource.FamilyRemoteDataSource
 import com.example.livingtogether.data.datasource.HouseworkRemoteDataSource
 import com.example.livingtogether.data.datasource.UserRemoteDataSource
 import com.example.livingtogether.data.datasource.UsersHouseworkRemoteDataSource
-import com.example.livingtogether.data.offlinerepository.OfflineAuthRepository
-import com.example.livingtogether.data.offlinerepository.OfflineFamilyRepository
-import com.example.livingtogether.data.offlinerepository.OfflineHouseworkRepository
-import com.example.livingtogether.data.offlinerepository.OfflineUserRepository
-import com.example.livingtogether.data.offlinerepository.OfflineUsersHouseworkRepository
+import com.example.livingtogether.data.repository.AuthRepositoryImpl
+import com.example.livingtogether.data.repository.FamilyRepositoryImpl
+import com.example.livingtogether.data.repository.HouseworkRepositoryImpl
+import com.example.livingtogether.data.repository.UserRepositoryImpl
+import com.example.livingtogether.data.repository.UsersHouseworkRepositoryImpl
 import com.example.livingtogether.domain.repository.AuthRepository
 import com.example.livingtogether.domain.repository.FamilyRepository
 import com.example.livingtogether.domain.repository.HouseworkRepository
@@ -38,26 +38,26 @@ interface AppContainer {
 class AppDataContainer(private val context: Context) : AppContainer {
 
     override val authRepository: AuthRepository by lazy {
-        OfflineAuthRepository(AuthRemoteDataSource(FirebaseAuth.getInstance()))
+        AuthRepositoryImpl(AuthRemoteDataSource(FirebaseAuth.getInstance()))
     }
 
     override val userRepository: UserRepository by lazy {
-        OfflineUserRepository(UserRemoteDataSource(FirebaseFirestore.getInstance()))
+        UserRepositoryImpl(UserRemoteDataSource(FirebaseFirestore.getInstance()))
     }
 
     override val familyRepository: FamilyRepository by lazy {
-        OfflineFamilyRepository(FamilyRemoteDataSource(FirebaseFirestore.getInstance()))
+        FamilyRepositoryImpl(FamilyRemoteDataSource(FirebaseFirestore.getInstance()))
     }
 
     override val houseworkRepository: HouseworkRepository by lazy {
-        OfflineHouseworkRepository(
+        HouseworkRepositoryImpl(
             HouseworkRemoteDataSource(FirebaseFirestore.getInstance()),
             UsersHouseworkRemoteDataSource(FirebaseFirestore.getInstance())
         )
     }
 
     override val usersHouseworkRepository: UsersHouseworkRepository by lazy {
-        OfflineUsersHouseworkRepository(UsersHouseworkRemoteDataSource(FirebaseFirestore.getInstance()))
+        UsersHouseworkRepositoryImpl(UsersHouseworkRemoteDataSource(FirebaseFirestore.getInstance()))
     }
 
     override val getUserHouseworkListUseCase: GetUserHouseworkListUseCase =

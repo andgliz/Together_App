@@ -4,7 +4,6 @@ import com.example.livingtogether.data.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-
     fun getAllFromFamilyFlow(currentUsersFamily: String) : Flow<List<User>>
 
     fun getUserFlow(currentUserId: String): Flow<User?>

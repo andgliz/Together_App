@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 fun DateRangePickerModal(
     onDateRangeSelected: (Pair<Long, Long>) -> Unit,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val dateRangePickerState = rememberDateRangePickerState()
 
@@ -36,7 +36,7 @@ fun DateRangePickerModal(
                     )
                     onDismiss()
                 },
-                enabled = dateRangePickerState.selectedEndDateMillis != null && dateRangePickerState.selectedStartDateMillis != null
+                enabled = dateRangePickerState.selectedEndDateMillis != null && dateRangePickerState.selectedStartDateMillis != null,
             ) {
                 Text("OK")
             }
@@ -45,21 +45,21 @@ fun DateRangePickerModal(
             TextButton(onClick = onDismiss) {
                 Text("Cancel")
             }
-        }
+        },
     ) {
         DateRangePicker(
             state = dateRangePickerState,
             title = {
                 Text(
                     text = "Select date range",
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
                 )
             },
             showModeToggle = false,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(500.dp)
-                .padding(16.dp)
+                .padding(16.dp),
         )
     }
 }

@@ -23,25 +23,25 @@ class LoginViewModel(
 
     fun onEmailChange(emailInput: String) {
         _uiState.value = _uiState.value.copy(
-            emailState = emailInput
+            emailState = emailInput,
         )
     }
 
     fun onPasswordChange(passwordInput: String) {
         _uiState.value = _uiState.value.copy(
-            passwordState = passwordInput
+            passwordState = passwordInput,
         )
     }
 
     fun onNameChange(nameInput: String) {
         _uiState.value = _uiState.value.copy(
-            nameState = nameInput
+            nameState = nameInput,
         )
     }
 
     private fun onError(error: String) {
         _uiState.value = _uiState.value.copy(
-            errorState = error
+            errorState = error,
         )
     }
 
@@ -55,8 +55,7 @@ class LoginViewModel(
             onError("Email and password cannot be empty.")
         } else if (name.isBlank()) {
             onError("Create a name")
-        }
-        else {
+        } else {
             viewModelScope.launch {
                 val result = authRepository.signUp(email, password)
                 if (result.isNotBlank()) {
@@ -67,7 +66,7 @@ class LoginViewModel(
                         User(
                             id = Firebase.auth.currentUser!!.uid,
                             email = email,
-                            userName = name
+                            userName = name,
                         )
                     )
                     onSuccess()
@@ -79,7 +78,7 @@ class LoginViewModel(
     fun signIn(
         email: String,
         password: String,
-        onSuccess: () -> Unit
+        onSuccess: () -> Unit,
     ) {
         if (email.isBlank() || password.isBlank()) {
             onError("Email and password cannot be empty.")
