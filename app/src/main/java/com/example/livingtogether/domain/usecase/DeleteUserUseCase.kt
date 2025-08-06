@@ -3,8 +3,9 @@ package com.example.livingtogether.domain.usecase
 import com.example.livingtogether.domain.repository.AuthRepository
 import com.example.livingtogether.domain.repository.UserRepository
 import com.example.livingtogether.domain.repository.UsersHouseworkRepository
+import javax.inject.Inject
 
-class DeleteUserUseCase(
+class DeleteUserUseCase @Inject constructor(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
     private val usersHouseworkRepository: UsersHouseworkRepository,

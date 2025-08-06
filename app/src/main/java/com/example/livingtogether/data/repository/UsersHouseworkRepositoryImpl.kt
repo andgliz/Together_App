@@ -5,8 +5,9 @@ import com.example.livingtogether.data.model.UsersHousework
 import com.example.livingtogether.domain.repository.UsersHouseworkRepository
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
+import javax.inject.Inject
 
-class UsersHouseworkRepositoryImpl(private val usersHouseworkRemoteDataSource: UsersHouseworkRemoteDataSource) :
+class UsersHouseworkRepositoryImpl @Inject constructor(private val usersHouseworkRemoteDataSource: UsersHouseworkRemoteDataSource) :
     UsersHouseworkRepository {
     override fun getUsersHouseworkListFlow(
         currentUserId: String,

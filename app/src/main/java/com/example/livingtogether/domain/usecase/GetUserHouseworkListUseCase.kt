@@ -3,8 +3,9 @@ package com.example.livingtogether.domain.usecase
 import com.example.livingtogether.data.model.Housework
 import com.example.livingtogether.data.model.UsersHousework
 import com.example.livingtogether.domain.repository.HouseworkRepository
+import javax.inject.Inject
 
-class GetUserHouseworkListUseCase(
+class GetUserHouseworkListUseCase @Inject constructor(
     private val houseworkRepository: HouseworkRepository
 ) {
     suspend operator fun invoke(houseworkList: List<UsersHousework>): List<Housework> {

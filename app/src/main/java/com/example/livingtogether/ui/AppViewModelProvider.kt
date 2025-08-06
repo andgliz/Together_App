@@ -15,54 +15,75 @@ import com.example.livingtogether.ui.today.TodayViewModel
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
+            val component =
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).appComponent
+
             TodayViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.usersHouseworkRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.houseworkRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.userRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.getUserHouseworkListUseCase,
+                component.authRepository(),
+                component.usersHouseworkRepository(),
+                component.houseworkRepository(),
+                component.userRepository(),
+                component.getUserHouseworkListUseCase(),
             )
         }
         initializer {
+            val component =
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).appComponent
+
             HouseworkViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.houseworkRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.userRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository,
+                component.houseworkRepository(),
+                component.userRepository(),
+                component.authRepository(),
             )
         }
         initializer {
+            val component =
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).appComponent
+
             RatingViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.userRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.getUserRatingUseCase,
+                component.authRepository(),
+                component.userRepository(),
+                component.getUserRatingUseCase(),
             )
         }
         initializer {
+            val component =
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).appComponent
+
             ProfileViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.userRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.familyRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.deleteUserFromFamilyUseCase,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.deleteUserUseCase,
+                component.authRepository(),
+                component.userRepository(),
+                component.familyRepository(),
+                component.deleteUserFromFamilyUseCase(),
+                component.deleteUserUseCase(),
             )
         }
         initializer {
+            val component =
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).appComponent
+
             LoginViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.userRepository,
+                component.authRepository(),
+                component.userRepository(),
             )
         }
         initializer {
+            val component =
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).appComponent
+
             TogetherViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.userRepository,
+                component.authRepository(),
+                component.userRepository(),
             )
         }
         initializer {
+            val component =
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).appComponent
+
             FamilyViewModel(
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.authRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.familyRepository,
-                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TogetherApplication).container.userRepository,
+                component.authRepository(),
+                component.familyRepository(),
+                component.userRepository(),
             )
         }
     }

@@ -5,8 +5,9 @@ import com.example.livingtogether.data.datasource.UsersHouseworkRemoteDataSource
 import com.example.livingtogether.data.model.Housework
 import com.example.livingtogether.domain.repository.HouseworkRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class HouseworkRepositoryImpl(
+class HouseworkRepositoryImpl @Inject constructor(
     private val houseworkRemoteDataSource: HouseworkRemoteDataSource,
     private val usersHouseworkRemoteDataSource: UsersHouseworkRemoteDataSource
 ) :

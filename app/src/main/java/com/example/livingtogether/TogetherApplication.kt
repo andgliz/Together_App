@@ -1,15 +1,24 @@
 package com.example.livingtogether
 
 import android.app.Application
-import com.example.livingtogether.data.AppContainer
-import com.example.livingtogether.data.AppDataContainer
+import com.example.livingtogether.di.AppComponent
+import com.example.livingtogether.di.DaggerAppComponent
+import com.example.livingtogether.di.FirebaseModule
+import com.example.livingtogether.di.RepositoryModule
 
 class TogetherApplication : Application() {
 
-    lateinit var container: AppContainer
+    lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
-        container = AppDataContainer(this)
+
+        appComponent = DaggerAppComponent
+            .builder()
+            .firebaseModule(FirebaseModule())
+            .repositoryModule(RepositoryModule())
+            .build()
+
+        appComponent.inject(this)
     }
 }

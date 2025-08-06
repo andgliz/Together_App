@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Button
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -56,11 +57,12 @@ fun ProfileScreen(
                 horizontalArrangement = Arrangement.End,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 30.dp, end = 16.dp),
+                    .padding(top = 48.dp, end = 16.dp),
             ) {
                 FloatingActionButton(
                     onClick = { viewModel.signOut(onDeleteAccountSuccess) },
                     modifier = Modifier,
+                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
                     containerColor = Color.Unspecified,
                 ) {
                     Icon(

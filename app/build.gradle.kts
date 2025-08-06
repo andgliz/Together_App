@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp") version "2.1.10-1.0.31"
     alias(libs.plugins.google.gms.google.services)
+    id("kotlin-kapt")
 }
 
 android {
@@ -18,6 +19,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    kapt {
+        generateStubs = true
     }
 
     buildTypes {
@@ -43,6 +48,10 @@ android {
 
 
 dependencies {
+    // Dagger 2
+    kapt(libs.dagger.compiler)
+    implementation(libs.dagger)
+
     // Import the BoM for the Firebase platform
     implementation(platform(libs.firebase.bom.v33110))
 

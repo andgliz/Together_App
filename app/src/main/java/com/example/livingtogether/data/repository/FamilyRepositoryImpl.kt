@@ -3,8 +3,9 @@ package com.example.livingtogether.data.repository
 import com.example.livingtogether.data.datasource.FamilyRemoteDataSource
 import com.example.livingtogether.data.model.Family
 import com.example.livingtogether.domain.repository.FamilyRepository
+import javax.inject.Inject
 
-class FamilyRepositoryImpl(private val familyRemoteDataSource: FamilyRemoteDataSource) :
+class FamilyRepositoryImpl @Inject constructor(private val familyRemoteDataSource: FamilyRemoteDataSource) :
     FamilyRepository {
     override suspend fun findFamily(name: String, password: String): String? {
         return familyRemoteDataSource.findFamily(name = name, password = password)

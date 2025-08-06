@@ -5,8 +5,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class FamilyRemoteDataSource(private val firestore: FirebaseFirestore) {
+class FamilyRemoteDataSource @Inject constructor(private val firestore: FirebaseFirestore) {
 
     suspend fun findFamily(name: String, password: String): String? {
         val findFamily =  firestore

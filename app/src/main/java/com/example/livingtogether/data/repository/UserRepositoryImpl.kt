@@ -4,8 +4,9 @@ import com.example.livingtogether.data.datasource.UserRemoteDataSource
 import com.example.livingtogether.data.model.User
 import com.example.livingtogether.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class UserRepositoryImpl(private val userRemoteDataSource: UserRemoteDataSource) :
+class UserRepositoryImpl @Inject constructor(private val userRemoteDataSource: UserRemoteDataSource) :
     UserRepository {
 
     override fun getAllFromFamilyFlow(currentUsersFamily: String): Flow<List<User>> {

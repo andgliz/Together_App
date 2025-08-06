@@ -6,8 +6,9 @@ import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class UserRemoteDataSource(private val firestore: FirebaseFirestore) {
+class UserRemoteDataSource @Inject constructor(private val firestore: FirebaseFirestore) {
 
     fun getAllFromFamilyFlow(currentUsersFamily: String): Flow<List<User>> {
         return firestore

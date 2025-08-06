@@ -4,8 +4,9 @@ import com.example.livingtogether.data.datasource.AuthRemoteDataSource
 import com.example.livingtogether.domain.repository.AuthRepository
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class AuthRepositoryImpl(private val authRemoteDataSource: AuthRemoteDataSource) :
+class AuthRepositoryImpl @Inject constructor(private val authRemoteDataSource: AuthRemoteDataSource) :
     AuthRepository {
     override val currentUser: FirebaseUser? get() = authRemoteDataSource.currentUser
 
