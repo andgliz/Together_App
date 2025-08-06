@@ -19,6 +19,7 @@
 - **Firebase Firestore** — облачное хранилище данных (заменил Room)
 - **Jetpack Navigation (NavController)** — навигация между экранами
 - **Kotlin Coroutines/Flow**
+- **Dagger 2**
 
 ## 📲 Возможности
 
@@ -67,4 +68,3 @@
 
 - 🎨 Улучшение UI/UX
 - 👨‍👩‍👧‍👧 Добавление редактора семьи
-- 🔁 Dagger/Hilt
